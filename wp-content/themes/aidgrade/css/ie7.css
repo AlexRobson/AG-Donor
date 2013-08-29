@@ -1,0 +1,39 @@
+.wpcf7-form  input{
+	height: 26px;
+	padding: 10px 13px 0 13px !important;
+}
+.wpcf7-form{
+	padding: 22px;
+}
+.formers-comments{
+	text-align: center;
+}
+.formers-comments .left-rnd-p{
+	width: 19px;
+	height: 44px;
+	background: url(images/left_rnd_p_vol.jpg) no-repeat;
+	margin: -1px 0 0 0;
+	float: left;
+}
+.formers-comments .right-rnd-p{
+	width: 20px;
+	height: 44px;
+	background: url(images/right_rnd_p_vol.jpg) no-repeat;
+	margin: -1px 0 0 0;
+	float: right;
+}
+.logos ul li{
+	display: inline;
+}
+.logos ul li a{
+	display: inline;
+}
+#loginform  input{
+	width: 244px;
+	height: 26px;
+	padding: 10px 13px 0 13px !important;
+	margin: 5px 20px 15px 0;
+}
+#loginform input#wp-submit{
+	margin: 0 0 10px -20px;
+}

@@ -1,0 +1,32 @@
+/* PowerTip Plugin */
+#powerTip {
+	cursor: default;
+	/*background: url(../images/bg_tooltip.png) scroll repeat-x 0 0 #232322;*/
+	background-color: #232322;
+	border-radius: 6px;
+	font-family: Pompiere, Arial;
+	font-size: 21px;
+	color: #89c422;
+	display: none;
+	padding: 7px 10px 8px 10px;
+	position: absolute;
+	white-space: nowrap;
+	z-index: 2;
+	box-shadow: 2px 2px 2px #464745;
+}
+#powerTip.n:before,
+#powerTip.ne:before {
+	content: "";
+	position: absolute;
+}
+#powerTip.n:before {
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+	left: 50%;
+	margin-left: -5px;
+}
+
+#powerTip.n:before {
+	border-top: 10px solid #464745;
+	bottom: -10px;
+}

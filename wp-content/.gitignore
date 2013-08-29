@@ -1,0 +1,9 @@
+*.tgz
+*.tar.gz
+plugins/*.zip
+themes/twenty*
+plugins/dynamic-slider/includes/cache/
+uploads/
+themes/aidgrade/_*.php
+plugins/donations/test-dpm.php
+themes/.aidgrade-ori

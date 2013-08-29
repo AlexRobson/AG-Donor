@@ -1,0 +1,115 @@
+/*#home-slider{
+	float: left;
+	width: 950px;
+	height: 320px;	
+	position: relative;
+}
+.slide{
+	width: 950px;
+	height: 320px;	
+  	background-color: #778395;
+    background-color: #fff;
+}
+.slide-info{
+  	background-color: #99a5b8;
+	position: absolute;
+	width: 290px;
+  	height: 250px;
+	padding: 40px 30px 30px 30px;  	
+  	right: 0;
+  	top: 0;
+ 	z-index: 40;
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#slider p {
+    color: #FFFFFF;
+    font-size: 14px !important;
+	font-family: Arial, Helvetica, sans-serif;
+    line-height: 18px;
+    margin-bottom: 15px;
+}
+#slider strong {	
+	font-size: 26px; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: normal;
+}
+.slide-image{
+  	height: 320px;
+	width: 600px;
+	background-color: #8e9aab;
+}
+#slider{
+	height: 320px;
+}
+#slider h2{
+  font-size: 28px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 15px;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: normal;
+  padding: 0;
+  max-height: 108px;
+  overflow: hidden;
+}*/
+/* View more */
+/*#slider a.view {
+  padding: 7px 20px;
+  display: inline-block;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+  line-height: 12px;
+  background-color: #5a6981;
+}
+#slider a.view:hover{
+	background: #394f72;
+    color: #fff;
+    text-decoration: none;	
+}*/
+/* Nav Slider */
+/*#nav-slider {
+    line-height: 25px;
+    position: absolute;
+	bottom: 20px;
+    z-index: 50;
+    width: auto;
+    padding: 9px 5px 0px 20px;
+    overflow: hidden;
+}
+#div-inqtools #nav-slider {
+	margin-bottom: 265px;
+	padding-top: 115px;
+}
+#nav-slider a {
+    border: 2px solid #FFFFFF;
+    display: block;
+    float: left;
+    height: 50px;
+    margin: 0 5px 0 0;
+    padding: 0;
+    width: 61px;
+    background-color: #385377;	
+}
+#nav-slider a:hover{
+    border-color: #203f6c;
+}
+#nav-slider a.activeSlide{
+    border-width: 2px;
+	border-color: #203f6c;
+    margin-top: 0;
+}
+#nav-slider a.activeSlide:hover{
+    border-color: #346ab8;
+}
+.back-slide {
+    height: 320px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 600px;
+    z-index: 30;
+}*/
