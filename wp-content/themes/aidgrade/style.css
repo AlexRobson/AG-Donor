@@ -2072,7 +2072,7 @@ a.button-portfolio {
 }
 .step-one p.title {
   width: 230px;
-  font-family: 'Pompiere', Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-size: 20px;
   color: #222320;
   margin: 17px 0 0 33px;
@@ -2096,11 +2096,11 @@ a.button-portfolio {
 .step-three p.title {
   width: 230px;
   width: 220px;
-  font-family: 'Pompiere', Arial, Helvetica, sans-serif;
-  font-size: 20px;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 17px;
   color: #222320;
   margin: 17px 0 0 33px;
-  margin: 17px 0 0 44px;
+  margin: 19px 0 0 44px;
   float: left;
 }
 .step-two a.question,
@@ -2367,7 +2367,7 @@ a.button-portfolio {
 .result {
   width: 990px;
   background: #f5f5f5;
-  border: 1px solid #f1f1f1;
+/*  border: 1px solid #f1f1f1; */
   border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
   -webkit-border-radius: 0 0 5px 5px;
@@ -2713,10 +2713,10 @@ body .wp-pagenavi a.page:hover {
 }
 .donors .step-one p.title {
   width: 251px;
-  font-family: 'Pompiere', Arial, Helvetica, sans-serif;
-  font-size: 20px !important;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 17px !important;
   color: #222320;
-  margin: 17px 0 0 12px;
+  margin: 19px 0 0 12px;
   float: left;
 }
 .donors .step-one .fun-area {
