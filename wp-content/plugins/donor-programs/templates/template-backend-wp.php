@@ -68,7 +68,8 @@
                 <a href="javascript:;" class="button" id="toggletab2">Outcomes</a> 
                 <a href="javascript:;" class="button" id="toggletab3">Relations</a>
                 <a href="javascript:;" class="button" id="toggletab4">Settings</a>
-                <a href="javascript:;" class="button" id="toggletab5">Import CSV</a>
+                <a href="javascript:;" class="button" id="toggletab5">Import Relations</a>
+                <a href="javascript:;" class="button" id="toggletab5">Import Bibliography</a>
                 </p>
                 <p class="button-description"></p>
     </div> 

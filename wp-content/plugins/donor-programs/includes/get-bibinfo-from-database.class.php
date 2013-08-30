@@ -22,7 +22,6 @@ class getbibinfofromdatabase{
 		# Funtion to get key data from table.
 		# Input: An array of integers indexing the papers
 		# Output: An Array containing bibligraphic variables; author, title, etc.
-
 		global $wpdb;	
 		$bibref_columnid = "entries_id";
 		$bibstring = implode(',',$bibindexarray);	
@@ -79,7 +78,7 @@ class getbibinfofromdatabase{
     
 
 		foreach($result as $i=>$item){
-            $result[$i]['name'] = md5(uniqid(rand(), true));
+            $result[$i]['name'] = '';
             $result[$i]['weight']=$weights[$i];
 		}
         unset($item);

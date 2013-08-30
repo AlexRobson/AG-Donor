@@ -103,7 +103,8 @@
 		//print_r( $adjust_tool_tip_value_units ); exit;
 ?>
 <div class="result-info<?php echo ($i==0)?' meta':(($i+1==count($data))?' last paper':' paper'); ?>">
-	<div class=nameblock" style="float:left">
+    <div class=nameblock" style="float:left">
+        <div class="nameblock-data">
         <p class="name" style="margin: 0; float:none"><?php echo $data[$i]['name']; ?>
 <?php if ($i==0): ?>
     </p>
@@ -117,9 +118,10 @@
     </div> 
 <?php else: ?>
         (<?php echo $bibdata[$i]['year']?>)</p>
-<?php endif; ?>
         <p class="weight" style="margin: 0; float:none">Weighting: <?php echo sprintf('%0.2f',100*$data[$i]['weight']); ?>%</p>
-	</div>
+<?php endif; ?>
+    </div>
+    </div > 
 <?php if( $apply_zoom == 1 && false ): ?>
 	<div id="scale-zoom" style="float: left; font-family: 'Pompiere',Arial,Helvetica,sans-serif; position: absolute; right: 0; top: 3px;">
 		Scale Zoom&nbsp;<span class="0">(x1)</span>&nbsp;
@@ -139,8 +141,9 @@
         </p>
 
             <p class="slice-count" style="margin: 0px 0px 0px <?php echo $margin_left; ?>px; background-position: <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px; background-size: <?php echo 25*sqrt(($data[$i]['weight']));?>px <?php echo 25*sqrt(($data[$i]['weight']));?>px;">
-			<?php echo mouse_over_mean_text( $adjust_tool_tip_value_units[$i], $data[$i]['name'], $data[$i]['unit'], $template, $selection_name, $data[$i]['bibref'] ); ?>
-			<?php if($data[$i]['lower']<$data[$i]['mean'] && $data[$i]['upper']>$data[$i]['mean']): ?>
+			<?php echo mouse_over_mean_text( $adjust_tool_tip_value_units[$i], $selection_name, $data[$i]['unit'], $template, $data[0]['name'], ($i>0)? null:null) ; ?>
+
+            <?php if($data[$i]['lower']<$data[$i]['mean'] && $data[$i]['upper']>$data[$i]['mean']): ?>
 				<?php echo $data[$i]['mean']; ?>
 			<?php endif; ?>
 		</p>
@@ -184,7 +187,8 @@
 <script type="text/javascript">
 //<!--
 	jQuery(document).ready(function(){		
-		jQuery('span.tooltip a').powerTip({placement: 'n'});
+        jQuery('span.tooltip a').powerTip({placement: 'n'});
+        alert(this);
 		var $zoom_value = 10;
 		var $max = false;
 		jQuery("#scale-zoom a").click(function(e){
@@ -300,13 +304,14 @@
 
 
 <style type="text/css">
-.result-info.paper p.name {text-indent: 10px; font-size:14px; padding: 30px 0px 15px 0px;}
+.result-in {border-bottom: solid 1px #cfcfcf;}
+.result-info.paper p.name {font-size:14px; padding: 30px 0px 15px 10px;}
 .result-info.meta p.name  {padding: 20px 0px 15px 0px}
-.result-info.last {padding: 0px 0px 25px 0px; background: url(../wp-content/themes/aidgrade/images/bg_outcome.jpg) bottom left repeat-x;}
+.result-info.last {padding: 0px 0px 25px 0px; }
 
 .result-info p.button-description {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#f5f5f5; height: 12px; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y;}
-.result-info p.weight {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#f5f5f5; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y; }
-.result-info p.weight.selected {color:#bababa} 
+.result-info p.weight {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#bababa; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y; }
+.result-info p.weight.selected {color:#a7a7a7;} 
 
 
 p.button-description.selected {color:#bababa} 
@@ -365,14 +370,41 @@ font-weight: bold;
 font-size: 18px;
 color: #3e3e3e;
 }
-.author .title {
+.bibentrylong .title {
 font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+font-weight: bold;
+font-size: 14px;
+
 }
+
+
+.bibliography ol {
+
+list-style-type: square;
+padding-left: 20px;
+
+}
+
+
 .title {
 color: #3e3e3e;
 }
 .result {
 
+}
+
+/* OVERRIDE */
+
+.result-info.paper p.name {
+    padding:30px 10px 15px 10px;
+    background:none;
+    width: auto;
+}
+
+.result-info.meta {
+    margin:0px;
+    padding: 0 10px 0 20px;
+border-bottom: solid 1px #cfcfcf;
 }
 
 </style>

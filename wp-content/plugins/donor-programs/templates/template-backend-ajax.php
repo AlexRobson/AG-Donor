@@ -51,14 +51,21 @@ function donorprog_admin_display_intepretation($csv,$db_obj,$rids){
                         <input type="text" name="relations[outcome_values][position][rflag]" value="<?php print($csv['Rflag'])?>" />
                         <?php //echo get_select(array( 0 => array( 'id' => 'program-in-select', 'name' => 'Examine a program' ), 1 => array( 'id' => 'outcome-in-select', 'name' => 'Compare programs by outcome' ), 2 => array( 'id' => 'both', 'name' => 'Both' ) ), 'position', null, 'relations[outcome_values]', 'rflag', 'Select an option'); ?>
                     </div>
+                    <div style="clear:both;"></div>
                     <div class="left-form">
                         <label>Number_of_studies</label>
-                        <input type="text" name="relations[outcome_values][position][number_of_studies]" value="<?php print(count(explode(";",$csv[0]['papernumbers'])))?>" />
+                        <input type="text" name="relations[outcome_values][position][number_of_studies]" value="<?php print(count(explode(";",$csv['papernumbers'])))?>" />
                     </div>
                     <div class="left-form">
-                        <label>Bibligraphic indices</label>
-                        <input type="text" name="relations[outcome_values][position][bibref]" value="<?php print($csv['papernumbers'])?>" />
+                        <label>Bibligraphic Data</label>
+                        <input type="text" name="relations[outcome_values][position][bibdata]" value="<?php echo ($csv['bibdata']);?>" />
                     </div>
+
+                    <div class="left-form">
+                        <label>Bibligraphic indices</label>
+                        <input type="text" name="relations[outcome_values][position][bibref]" value="<?php echo $csv['papernumbers'];?>" />
+                    </div>
+                    <div style="clear:both;"></div>
                     <div class="left-form">
                         <label>Save Options</label>
                         <select>

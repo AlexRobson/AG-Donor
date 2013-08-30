@@ -181,7 +181,7 @@ function donorprog_process_ajax_call(){
 		$set_values = explode('-', $_POST['selection']);
 		$set_values = array( 'program_id' => $set_values[0], 'outcome_id' => $set_values[1], 'method' => $set_values[2], 'blinded' => $set_values[3], 'effect' => $set_values[4] );
         //echo '<pre>'; print_r($set_values); echo '</pre>';
-		get_results_with_bibinfo( $db_obj->get_results_meta_analysis($set_values), 'programs', $db_obj->get_name_by_id( $set_values['program_id'], 'programs' ));
+		get_results_with_bibinfo( $db_obj->get_results_meta_analysis($set_values), 'forest', $db_obj->get_name_by_id( $set_values['program_id'], 'programs' ));
 	}
 	elseif( isset($_POST['method']) && $_POST['method'] == 'scale_function' ){
 		math_scale_zoom($_POST, true);
@@ -281,9 +281,15 @@ function math_scale_zoom( $data = array(), $ajax_call = false ){
 		return array( $margin_left, $slice_width, $slice_margin_left  );
 }
 
-function mouse_over_mean_text( $mean = null, $name = null, $unit = null, $template = null, $selection_name = null, $bibref = null ){ 
+function mouse_over_mean_text( $mean = null, $name = null, $unit = null, $template = null, $selection_name = null, $bibdata = null ){ 
 	//$result = '<span class="tooltip">mean: '.$mean.' name: '.$name.' unit: '.$unit.' template: '.$template.' selection name: '.$selection_name;
-	$result = '<span class="tooltip">';
+    $result = '<span class="tooltip">';
+
+    if ($template == 'forest' && $bibdata){
+        $result .= $bibdata." found that ";
+        $template = 'programs';
+    }
+
 	if($mean != null && $name && $unit && $template && $selection_name){
 		if( str_replace(' ', '-', strtolower(trim($unit))) == '(rate-ratio)' || str_replace(' ', '-', strtolower(trim($unit))) == '(risk-ratio)' ){
 			$result .= '<a class="'.$mean.'" title="'.(($template=='programs')?ucfirst($selection_name):ucfirst($name)).' '.(($mean>1)?"increased":"decreased").' '.(($template=='programs')?strtolower($name):strtolower($selection_name)).' by '.$mean.' '.$unit.'">&nbsp;</a>';
@@ -294,7 +300,9 @@ function mouse_over_mean_text( $mean = null, $name = null, $unit = null, $templa
 		else{
 			$result .= '<a class="'.$mean.'" title="'.(($template=='programs')?ucfirst($selection_name):ucfirst($name)).' programs '.(($mean<=0)?"decreased":"increased").' '.(($template=='programs')?strtolower($name):strtolower($selection_name)).' by '.$mean.' '.$unit.'">&nbsp; </a>';
 		}
-	}
+    }
+
+
 	return $result.'</span>';
 }
 
@@ -303,8 +311,10 @@ add_action('wp_ajax_donoradmin_action', 'donorprog_admin_ajax_call');
 add_action('wp_ajax_nopriv_donoradmin_action', 'donorprog_admin_ajax_call');
 function donorprog_admin_ajax_call(){
 
-	include 'includes/get-info-from-database.class.php';
-	$db_obj = new getinfofromdatabase();
+    include 'includes/get-info-from-database.class.php';
+    include 'includes/get-bibinfo-from-database.class.php';
+    $db_obj = new getinfofromdatabase();
+    $bib_obj = new getbibinfofromdatabase();
     include 'templates/template-backend-ajax.php'; 
 
     if( isset($_POST['data']) ){        
@@ -323,6 +333,13 @@ function donorprog_admin_ajax_call(){
         $id['program_id'] = $db_obj->custom_get_program_id($line['program']); 
         $id['outcome_id'] = $db_obj->custom_get_outcome_id($line['outcome']);  
         $rids = $db_obj->custom_get_relations($id);
+        $bibdata = $bib_obj->get_bibdata(explode(";",$line['papernumbers']));
+        $citearray = array();
+        foreach ($bibdata as $b=>$bibitem) {
+            $citearray[$b] = $bibitem['cite_key'];
+        };
+        $csv[$i]['bibdata'] = implode(',',$citearray);
+
         echo  donorprog_admin_display_intepretation($csv[$i],$db_obj,$rids);
         // For each relatiion ID, get the stored outcome values
     };

@@ -7,9 +7,14 @@
  *
  *
  */
+
+
+
+
+
 ?>
 <div class="result-in" style="position:relative";>
-<?php echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data); ?>
+<?php echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data,$template,$selection_name); ?>
 </div>
 <div class="papers">
 <?php echo display_papers($bibdata); ?>
@@ -17,6 +22,9 @@
 
 <?php
 function populate_bibup($bibdata){
+
+    // Obsolete code
+
 	?>
 	<div class="bibliography-up" style="padding: 0 0 10px 0;">
 	<!-- Output bibligraphic data -->
@@ -30,16 +38,12 @@ function populate_bibup($bibdata){
 	<?php
 }
 
-function display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$metastudydata){
+function display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$metastudydata,$template,$selection_name){
 
     # Construct the data to represent the individual studies comprising the requested meta-analysis
     # Variables include lower, mean, upper, weighting etc.
     $single_studies = $bibdb_obj->get_paper_data($bibindexarray);
-//    $template =  'programs';
-//	$selection_name = '';
-    //    echo "<pre>";print_r($bibdata);echo "</pre>"; 
-    //
-    $metastudydata[0]['weight']=1; 
+//    $metastudydata[0]['weight']=1; 
 	foreach($single_studies as $i=>$item){
         	$single_studies[$i]['name'] = $bibdata[$i]['author'];
     }
@@ -54,27 +58,30 @@ function display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$m
 function display_papers($bibdata){
 
 ?>
+    <div class="bibliography" style="display:none">
+
 	<div class="spacer"></div>
-	<div class="bibliography">
                 <p class="bibligraphy" style="clear:both">              
                 <div class="bibentrydetail">
 	
 		<p id="biblistheader">
 		Contributing Papers
-		</p> 
+        </p>
+        <ol> 
 		<?php foreach($bibdata as $bibitem): ?>
-	        <div class="bibentrylong"  <?php echo 'id=bib'.$bibitem['entries_id'] ?> style="clear:both; display:inline"> 
-			<p class="author">
-			<?php echo $bibitem['author']; echo " (".$bibitem['year'].")";?>
-			</p>
-			<p class="title">
-			<?php echo $bibitem['title'] ?>	
-			</p>
+            <div class="bibentrylong"  <?php echo 'id=bib'.$bibitem['entries_id'] ?> style="clear:both; display:inline"> 
+                    <li>
+                    <p class="author">
+                    <?php echo $bibitem['author']; echo " (".$bibitem['year'].")";?>
+                    </p>
+                    <p class="title">
+                    <?php echo $bibitem['title'] ?>
+                    </li>    
+                    </p>
       		</div>    
         <?php endforeach; ?>
+        </ol>
 
-            <a href="" target="_blank" class="download-data-button">DOWNLOAD</a>
-        </div>
 
 
 	</div>
