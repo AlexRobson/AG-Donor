@@ -69,7 +69,7 @@
                 <a href="javascript:;" class="button" id="toggletab3">Relations</a>
                 <a href="javascript:;" class="button" id="toggletab4">Settings</a>
                 <a href="javascript:;" class="button" id="toggletab5">Import Relations</a>
-                <a href="javascript:;" class="button" id="toggletab5">Import Bibliography</a>
+                <a href="javascript:;" class="button" id="toggletab6">Import Bibliography</a>
                 </p>
                 <p class="button-description"></p>
     </div> 
@@ -543,6 +543,90 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+		
+		<div id="tabs-6">
+		
+        <form id="form-inq-bib-import" method="post">
+                <table class="wp-list-table widefat fixed" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Import data from CSV</th>
+                    </tr>
+                
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="left-form">
+                                <label>Help for submitting CSV: Example text (copy and paste in)</label>
+                                <textarea id="helpsubmitcsv" name="helpsubmitCSV" cols="200" rows="4">
+Bibligraphic data goes here</textarea>                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="left-form">
+                            <label>Alternatively, upload a CSV</label>
+                        </div>
+                        </td>
+                    </tr>                     
+                </tbody>
+                </table>	
+            <div class="help">
+                <p>
+                    <!-- HELP -->
+                    Some help text
+                </p>	
+            </div>	
+            <TEXTAREA name='tallbox' id="donorimport" rows=8 cols=10></TEXTAREA>
+            <input type="submit" name="CSVsave" id="CSVsave">	
+                <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="refresh" style="float:right;"/>Refresh</a>
+        </form>
+            <div style="clear:both"></div>
+        </div> 
+
+
+<div id="success" style="display:none" class="updated-inq"></div>
+
+
+<div id="detect-fields" style="display:none"></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
 jQuery(document).ready(function(){
 
@@ -617,6 +701,7 @@ jQuery(document).ready(function(){
             jQuery('#tabs-4').hide();   
             jQuery('#tabs-5').hide();   
 
+            jQuery('#tabs-6').hide();   
 
 
             jQuery('#toggletab1').click(function() {
@@ -633,6 +718,9 @@ jQuery(document).ready(function(){
             });
             jQuery('#toggletab5').click(function() {
                jQuery('#tabs-5').toggle();
+            });
+            jQuery('#toggletab6').click(function() {
+               jQuery('#tabs-6').toggle();
             });
 });
 </script>

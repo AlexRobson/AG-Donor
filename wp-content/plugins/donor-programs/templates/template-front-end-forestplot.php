@@ -141,7 +141,7 @@
         </p>
 
             <p class="slice-count" style="margin: 0px 0px 0px <?php echo $margin_left; ?>px; background-position: <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px; background-size: <?php echo 25*sqrt(($data[$i]['weight']));?>px <?php echo 25*sqrt(($data[$i]['weight']));?>px;">
-			<?php echo mouse_over_mean_text( $adjust_tool_tip_value_units[$i], $selection_name, $data[$i]['unit'], $template, $data[0]['name'], ($i>0)? null:null) ; ?>
+			<?php echo mouse_over_mean_text( $adjust_tool_tip_value_units[$i], $selection_name, $data[$i]['unit'], $template, $data[0]['name'], ($i>0)? '0':null) ; ?>
 
             <?php if($data[$i]['lower']<$data[$i]['mean'] && $data[$i]['upper']>$data[$i]['mean']): ?>
 				<?php echo $data[$i]['mean']; ?>
@@ -188,7 +188,7 @@
 //<!--
 	jQuery(document).ready(function(){		
         jQuery('span.tooltip a').powerTip({placement: 'n'});
-        alert(this);
+//        alert(this);
 		var $zoom_value = 10;
 		var $max = false;
 		jQuery("#scale-zoom a").click(function(e){
