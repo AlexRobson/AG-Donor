@@ -213,7 +213,8 @@ function get_results_with_bibinfo( $data = array(), $template = null, $selection
     $bibindexarray = $data[0]['bibindex'];;
     $bibdata = $bibdb_obj->get_bibdata($bibindexarray);
 
-	include 'templates/template-front-end-populate-bibinfo.php';
+
+    include 'templates/template-front-end-populate-bibinfo.php';
 //	echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data);
 //    echo display_papers($bibdata);
 	
@@ -397,4 +398,113 @@ function donorprog_admin_ajax_call_update(){
 die(); // Prevent the trailing zero from appearing    
 }
 
+
+add_action('wp_ajax_donoradmin_bib', 'donorprog_admin_ajax_call_bib');
+function donorprog_admin_ajax_call_bib(){
+
+
+    include 'includes/get-bibinfo-from-database.class.php';
+    include 'includes/get-info-from-database.class.php';
+    
+    include 'templates/template-backend-ajax.php'; 
+    
+
+    $bib_obj = new getbibinfofromdatabase();
+    $db_obj = new getinfofromdatabase();
+    if ($_POST['method']=="display"){
+        echo donorprog_admin_display_bibliography($bib_obj->get_bibdata('*'));  
+    }
+    elseif ($_POST['method']=='interpret'){
+
+        if( isset($_POST['data']) ){       
+            $csv = array_map(function ($data) {
+                    $ch =  '%';
+//                    return str_getcsv(str_replace('#@#',$ch,$data),$ch);
+                    //                    return str_replace('\\','',str_getcsv(str_replace('#@#',$ch,$data),$ch));
+                    return str_getcsv($data , ',' , '"' , '\\') ;
+                    }
+            ,explode("\n", urldecode(stripslashes(chop($_POST['data'])))));
+//            echo "<pre>"; print_r($csv); echo "</pre>";
+            $keys = array_shift($csv);
+            foreach($csv as $i=>$row) {
+                if (count($keys)==count($row)){
+                    $csv[$i] = array_combine($keys,$row);
+                }
+                else {
+                    next;
+                };
+
+
+                
+                // Calculate $bibdata
+                //
+                // Calculate reference data
+                //
+                $reference = $csv[$i]['reference'];
+                $temp = explode('.',$reference);
+                $temp2 = explode('(',$temp[0]);
+                $csv[$i]['author'] = htmlentities($temp2[0]);
+                $csv[$i]['year'] = str_replace(')','',$temp2[1]);
+                $temp = explode(',',$temp[1]);
+
+                $csv[$i]['title'] = htmlentities($temp[0]);
+                $csv[$i]['journal'] = $temp[1];
+                $csv[$i]['units'] = str_replace(')','',explode('(',$csv[$i]['outcomename'])[1]);                        
+                $csv[$i]['outcomename'] = explode('(',$csv[$i]['outcomename'])[0];
+
+//            echo "<pre>"; print_r($csv); echo "</pre>";
+                    
+                $id['program_id'] = $db_obj->custom_get_program_id($line['program']); 
+                $id['outcome_id'] = $db_obj->custom_get_outcome_id($line['outcome']);  
+//                unset($csv[$i]['reference']);
+
+                
+            };  
+
+
+                echo donorprog_admin_display_bibliography($csv);
+
+
+
+        };
+
+       //    echo "Interpreting data..."; 
+        //
+
+    }
+
+die(); // Prevent the trailing zero from appearing
+
+}
+
+add_action('wp_ajax_donoradmin_bib_update', 'donorprog_admin_ajax_call_bib_update');
+function donorprog_admin_ajax_call_bib_update(){
+
+
+// Set up the DB and parse the data:
+    include 'includes/get-bibinfo-from-database.class.php';
+    $bib_obj = new getbibinfofromdatabase();
+   // print_r($_POST['data']);
+    parse_str(rawurldecode(stripslashes(($_POST['data']))),$data);
+
+
+
+
+    if ($_POST['method']=='Save'){
+    echo $bib_obj->admin_bib_update($data,'save');
+    }
+    elseif ($_POST['method']=='Remove'){
+
+
+        // Add in the jQuery call to the mysql remove
+        //
+
+    echo $bib_obj->admin_bib_update($data,'Remove');
+
+
+    };
+        
+die();
+
+}
 ?>

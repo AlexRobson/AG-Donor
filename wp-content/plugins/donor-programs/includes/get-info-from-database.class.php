@@ -372,7 +372,7 @@ class getinfofromdatabase{
 				$this->remove_outcome_values($outcome_values[$i]['id'], null, $wpdb);
 			}
 			if( isset($outcome_values[$i]['id']) && isset($outcome_values[$i]['relation_id']) ){
-				$sql = $wpdb->prepare( "UPDATE ".$this->table_prefix."outcome_values 
+				$sql = $wpdb->prepare( "INSERT ".$this->table_prefix."outcome_values 
 									SET 
 										lower='".trim($outcome_values[$i]['lower'])."', 
 										mean='".$outcome_values[$i]['mean']."', 

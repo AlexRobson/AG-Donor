@@ -1,6 +1,27 @@
 <?php
 
 
+/*
+// Add An
+CREATE TABLE `wp_donor_bibdata` (
+ `entries_id` int(11) NOT NULL AUTO_INCREMENT,
+ `paper_id` int(11) NOT NULL,
+ `lower` decimal(10,0) NOT NULL,
+ `ES` decimal(10,0) NOT NULL,
+ `upper` decimal(10,0) NOT NULL,
+ `outcome` int(11) NOT NULL,
+ `program` int(11) NOT NULL,
+ `author` varchar(500) DEFAULT NULL,
+ `year` int(11) NOT NULL,
+ `title` varchar(500) DEFAULT NULL,
+ `journal` varchar(500) DEFAULT NULL,
+ `units` varchar(50) DEFAULT NULL,
+ PRIMARY KEY (`entries_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+ */
+
+
+
 class getbibinfofromdatabase{
         private $plugin_suffix = "donor_";
         private $table_prefix = null;
@@ -22,29 +43,36 @@ class getbibinfofromdatabase{
 		# Funtion to get key data from table.
 		# Input: An array of integers indexing the papers
 		# Output: An Array containing bibligraphic variables; author, title, etc.
-		global $wpdb;	
-		$bibref_columnid = "entries_id";
-		$bibstring = implode(',',$bibindexarray);	
+        global $wpdb;	
+//        print_r($bibindexarray);
+        $bibref_columnid = "entries_id";
+        $bibtable_name = "program_bibinfo";
+        $bibtable_name = "bibdata";
+        if ($bibindexarray=="*"){
+            $where_clause =''; 
+        }
+        else{
+            $bibstring = implode(',',$bibindexarray);
+            # For each bibindex array get the appropriate row in the bibindex table
+            $where_clause = "WHERE
+                            ".$this->table_prefix.$bibtable_name."."."entries_id IN ($bibstring)";
+        }
 
-		# For each bibindex array get the appropriate row in the bibindex table
-		$where_clause = "WHERE
-					    ".$this->table_prefix."program_bibinfo.entries_id IN ($bibstring)";
-
-		$from = "author, title, journal, cite_key, year, entries_id"; 
+		$from = "author, title, journal, year, entries_id, paper_id, lower, ES, upper, outcome, program"; 
 
 		$sql = $wpdb->prepare("SELECT ".$from." "." 
 
-					FROM ".$this->table_prefix."program_bibinfo");
+            FROM ".$this->table_prefix.$bibtable_name);
+
 //		print_r($sql." ".$where_clause);
 		$result = $wpdb->get_results( $sql." ".$where_clause, ARRAY_A);
  
 
 		if (!result) {
-			echo 'No bibligraphic data found: ' . mysql_error();
-			exit;
+            echo 'No bibligraphic data found: ' . mysql_error();
+            return false;
 		}
-		
-//		print_r($result);
+//        print_r($result);
 		return $result?$result:null;
 
 	}
@@ -87,15 +115,62 @@ class getbibinfofromdatabase{
 		return $result?$result:null;
 
 
-                }
+        }
+
+    }
+
+    public function admin_bib_update($data,$method){
+
+        reset($data);
+        global $wpdb;
+		for($i=0; $i<count($data); $i++){
+            $bibdata = current($data);
+            print_r(mysql_real_escape_string($bibdata['author']));
+            
+            if ($method=='save'){
+				$sql = $wpdb->prepare( "INSERT ".$this->table_prefix."bibdata 
+									SET 
+										lower='".$bibdata['lower']."', 
+										ES='".$bibdata['ES']."', 
+										upper='".$bibdata['upper']."', 
+										units='".$bibdata['unit']."', 
+										author='".mysql_real_escape_string($bibdata['author'])."', 
+										title='".mysql_real_escape_string($bibdata['title'])."', 
+										journal='".$bibdata['journal']."', 
+										outcome='".$bibdata['outcome']."', 
+										program='".$bibdata['program']."', 
+                                        year='".$bibdata['year']."',
+                                        paper_id='".$bibdata['paperid']."'
+                                        ;" );
+
+                $resp = $wpdb->query( $sql );
+                echo $sql;
+            };
+
+            if ($method=='Remove'){
+                $resp = $this->remove_bibitem($bibdata['entries_id'],$wpdb);
+            }
 
 
+ //           echo $resp;
+            return $resp;
+        }; 
 
+    }
+
+	private function remove_bibitem( $id = null, $wpdb =  null ){
+		if($id && $wpdb){
+			$sql = $wpdb->prepare("DELETE FROM ".$this->table_prefix."bibdata WHERE entries_id='".$id."'");
+			$resp = $wpdb->query( $sql );
+			return ($resp)?true:false;
+		}
+		else{
+			return false;
+		}
 	}
 
-
-
 }
-
-
 ?>
+
+
+

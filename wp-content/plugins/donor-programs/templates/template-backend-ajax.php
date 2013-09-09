@@ -200,6 +200,52 @@ function display_interpretation_header(){
             </table>
 <?php 
 }
+
+
+function donorprog_admin_display_bibliography($bibdata){
+
+?> 
+
+	<div class="spacer"></div>
+                <p class="bibligraphy" style="clear:both">              
+                <div class="bibentrydetail">
+	
+		<?php foreach($bibdata as $bibitem): ?>
+            <div class="bibentrylong"  <?php echo 'id=bib'.$bibitem['entries_id'] ?> style="clear:both; display:inline">
+                    <form id="form-bib-import" method="post">
+                    <?php foreach($bibitem as $key=>$value):
+                            ?>
+                            <div class="left-form">
+                            <label><?php echo $key; ?></label>
+                                <input type="text" name="bibliography[<?php echo $key;?>]" value="<?php echo $value; ?>" />
+                            </div>
+                    <?php endforeach; ?>
+                            <div style="clear: both; margin-bottom:10px;"></div>
+                        <div class="input-to-save-import left-form">
+                            <input value="Save" type="submit" class="button-primary" name="SaveBibdata" />
+                        </div>
+                            <div class="input-to-remove-import left-form">
+                            <input value="Remove" type="submit" class="button-primary" name="RemoveBibdata" />
+                        </div>
+                    </form>
+                        <div class="input-status left-form">
+                            <input class="button-primary" value="Status: pending" id="status" style="display:none" disabled/>
+                        </div>
+                    
+            </div>  
+        <div style="clear: both; margin-bottom:10px;"></div>
+        <?php endforeach; ?>
+
+
+
+<?php   
+    
+
+
+
+
+}
+
+
+
 ?>
-
-

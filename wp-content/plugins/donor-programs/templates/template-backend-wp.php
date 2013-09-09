@@ -70,6 +70,7 @@
                 <a href="javascript:;" class="button" id="toggletab4">Settings</a>
                 <a href="javascript:;" class="button" id="toggletab5">Import Relations</a>
                 <a href="javascript:;" class="button" id="toggletab6">Import Bibliography</a>
+                <a href="javascript:;" class="button" id="toggletab7">Aliases</a>
                 </p>
                 <p class="button-description"></p>
     </div> 
@@ -529,10 +530,9 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
                 <option value="all">Display All</option>
             </select>    
             <input type="submit" name="CSVsave" id="CSVsave">	
-                <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="refresh" style="float:right;"/>Refresh</a>
+                <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-5-refresh" style="float:right;"/>Refresh</a>
         </form>
             <div style="clear:both"></div>
-        </div> 
 
 
 <div id="success" style="display:none" class="updated-inq"></div>
@@ -540,6 +540,7 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
 
 <div id="detect-fields" style="display:none"></div>
 
+     </div> 
 </div>
 
 
@@ -568,10 +569,14 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
                 <tbody>
                     <tr>
                         <td>
-                            <div class="left-form">
+                            <div class="left-form" style="width:100%;">
                                 <label>Help for submitting CSV: Example text (copy and paste in)</label>
-                                <textarea id="helpsubmitcsv" name="helpsubmitCSV" cols="200" rows="4">
-Bibligraphic data goes here</textarea>                            </div>
+                                <textarea id="helpsubmitcsv" name="helpsubmitCSV" rows="4" disabled style="background:#dddddd; width:100%;" >
+paperid,reference,lower,ES,upper,outcomename,intervention
+1,"Alam, Baez and Del Carpio (2011). ""Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan"", IZA Discussion Papers.",-0.043428,-0.0154,0.012628,Labor force participation (percentage points),CCTs
+2,"Baez and Camacho (2011). ""Assessing the Long-term Effects of Conditional Cash Transfers on Human Capital Evidence from Colombia"", Policy Research Working Papers.",-0.07464,-0.057,-0.03936,Test scores (standard deviations),CCTs
+                                </textarea>   
+                         </div>
                         </td>
                     </tr>
                     <tr>
@@ -586,24 +591,34 @@ Bibligraphic data goes here</textarea>                            </div>
             <div class="help">
                 <p>
                     <!-- HELP -->
-                    Some help text
                 </p>	
+
+
+
+
             </div>	
-            <TEXTAREA name='tallbox' id="donorimport" rows=8 cols=10></TEXTAREA>
-            <input type="submit" name="CSVsave" id="CSVsave">	
-                <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="refresh" style="float:right;"/>Refresh</a>
+            <TEXTAREA name='tallbox' id="bibimport" rows=8 cols=10></TEXTAREA>
+            <input type="submit" name="bibdisplaye" id="CSVsave" value="Display">	
+
+                <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-6-refresh" style="float:right;"/>Display</a>
         </form>
             <div style="clear:both"></div>
+
+        <div id="tabs-6-results" style="display:none"></div>
+
         </div> 
 
 
-<div id="success" style="display:none" class="updated-inq"></div>
-
-
-<div id="detect-fields" style="display:none"></div>
 
 </div>
 
+
+        <div id="tabs-7">
+
+
+
+</div>
+		
 
 
 
@@ -630,27 +645,56 @@ Bibligraphic data goes here</textarea>                            </div>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 
-    jQuery('#form-inq-donor-import').submit(function(){
-        jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
-        var data = jQuery(this).children('#donorimport').val();
-        var method = jQuery(this).children('#donorimport-display').val();
-        // Parse these data ia an AJAX call
-       jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_action',data:data, method:method},
-           function(answer){
-                jQuery('#detect-fields').html(answer).show();
-                return true;
-                
-            }
-            );
-            return false;
-    });
+                jQuery('#form-inq-donor-import').submit(function(){
+                    jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
+                    var data = jQuery(this).children('#donorimport').val();
+                    var method = jQuery(this).children('#donorimport-display').val();
+                    // Parse these data ia an AJAX call
+                jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_action',data:data, method:method},
+                    function(answer){
+                            jQuery('#detect-fields').html(answer).show();
+                            return true;
+                            
+                        }
+                        );
+                        return false;
+                });
 
+
+    // JQuery for the donorprog_admin_display_bibligraphy
+
+                jQuery(document).on('submit','#form-inq-bib-import' ,function(){
+                    // Parse these data ia an AJAX call
+//                    jQuery('#tabs-6-results').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
+                    data = encodeURIComponent(jQuery(this).children('#bibimport').val());
+//                    console.log(data);
+                    // Data needs to be placed into an array 
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib',data:data, method:'interpret'},
+                        function(answer){
+                            jQuery('#tabs-6-results').html(answer).show();
+                            jQuery('#form-bib-import>.input-to-remove-import').each(function() { jQuery(this).hide(); });
+                            return true;
+                        }
+                    );
+                    return false;
+                }); 
+                // JQuery remove code:
+                // This should be before the delegation/
+
+
+                jQuery(document).on('click',"input[type='submit']", function(event){
+//                        console.log('Click event triggered on submit DO');
+                        jQuery(this).addClass('bibclicked');
+                });
+
+
+// JQUERY SAVE CODE:
     // Add in the jQUery for the donorprog_admin_display_interpretation
                 jQuery(document).on('submit','#form-donor-import' ,function(){
                     // Parse these data ia an AJAX call
-                    $data = jQuery('#form-donor-import').serialize();
+                    $data = jQuery(this).serialize();
                     // Data needs to be placed into an array 
-                    
+ $method = jQuery(this).children(':submit')                   
 //                    alert(data);
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'create'},
                         function(answer){
@@ -661,13 +705,53 @@ jQuery(document).ready(function(){
                     return false;
                 }); 
 
+    // Add in the jQUery for the admin_bib_updaten
+                jQuery(document).on('submit','#form-bib-import' ,function(event){
+                    // Parse these data ia an AJAX call
+                    $data = jQuery(this).serialize();
+                    var selector = jQuery(this);
+//                    console.log('First');
+                    //                    console.log(selector)
+                    //
+                    //
+                   // Add in jQuery for adding class 'clicked' for clicked submit
+                    //                    console.log(jQuery(this).find(".bibclicked").attr('value'));
+                    $method = jQuery(this).find(".bibclicked").attr('value');
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib_update',data:$data, method:$method},
+                        function(answer){
+                            if(answer == 1) {
+                                //console.log(selector);
+                                //                                jQuery(selector).find('#status').attr('value','Saved!').show();
+                                jQuery(selector).siblings('.input-status').children('#status').attr('value',$method + 'd').show().css('border-color','green').attr('style','background-color:green!important');
+                                jQuery(selector).children('.input-to-save-import').hide();
+                            }
+                            else {
+                                console.log('The error in the mySQL call is:'); 
+                                console.log(answer); 
+                                jQuery(selector).siblings('.input-status').children('#status').attr('value','Error').show().css('border-color','red').attr('style','background-color:red!important');
+                                //                          console.log(selector); 
+//                                jQuery(selector).find('#status').attr('value','Error!').show();
+                            }
+                            // Remove the clicked class
+                            
+                            return true;
+                        }
+                    );
+//                    $method = jQuery(this).find('.bibclicked').removeClass('.bibclicked');
+                    return false;
+                }); 
+
+                // 
+                
+
+            
+// JQUERY REMOVE CODE
     // Add in the jQUery for the donorprog_admin_display_recorded_outcomesn
                 jQuery(document).on('submit','#form-donor-relation' ,function(){
                     // Parse these data ia an AJAX call
                     $data = jQuery(this).serialize();
                     // Data needs to be placed into an array 
                     
-                    alert($data);
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'remove'},
                         function(answer){
                             jQuery('#success').html('<p> The relation with ID ' + answer + ' has been removed. </p>').show();
@@ -678,13 +762,26 @@ jQuery(document).ready(function(){
                 }); 
 
 
+            // JQUERY Update code
+                jQuery('#tab-5-refresh').on('click',function(){
+                    jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">');
+                    jQuery('#success').html('');
+                    jQuery('#form-inq-donor-import').trigger('submit');
+                });
 
-
-    jQuery('#refresh').on('click',function(){
-        jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">');
-        jQuery('#success').html('');
-        jQuery('#form-inq-donor-import').trigger('submit');
-    });
+                jQuery('#tab-6-refresh').on('click',function(){
+                    
+                    jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib', method:'display'},
+                        function(answer){
+                            jQuery('#tabs-6-results').html(answer).show();
+                            jQuery('#form-bib-import>.input-to-save-import').each(function() { jQuery(this).hide(); });
+                            jQuery('.input-status>#status').each(function() { jQuery(this).show(); });
+                            return true;
+                        }
+                    );
+                    return false;
+                });
   
 });                
 
