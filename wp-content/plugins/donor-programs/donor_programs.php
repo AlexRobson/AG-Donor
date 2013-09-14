@@ -443,19 +443,19 @@ function donorprog_admin_ajax_call_bib(){
                 $reference = $csv[$i]['reference'];
                 $temp = explode('.',$reference);
                 $temp2 = explode('(',$temp[0]);
-                $csv[$i]['author'] = htmlentities($temp2[0]);
+                $csv[$i]['author'] = ($temp2[0]);
                 $csv[$i]['year'] = str_replace(')','',$temp2[1]);
                 $temp = explode(',',$temp[1]);
 
-                $csv[$i]['title'] = htmlentities($temp[0]);
+                $csv[$i]['title'] = ($temp[0]);
                 $csv[$i]['journal'] = $temp[1];
                 $csv[$i]['units'] = str_replace(')','',explode('(',$csv[$i]['outcomename'])[1]);                        
                 $csv[$i]['outcomename'] = explode('(',$csv[$i]['outcomename'])[0];
 
 //            echo "<pre>"; print_r($csv); echo "</pre>";
                     
-                $id['program_id'] = $db_obj->custom_get_program_id($line['program']); 
-                $id['outcome_id'] = $db_obj->custom_get_outcome_id($line['outcome']);  
+                $csv[$i]['program'] = $db_obj->custom_get_program_id($csv[$i]['intervention']); 
+                $csv[$i]['outcome'] = $db_obj->custom_get_outcome_id($csv[$i]['outcomename']);  
 //                unset($csv[$i]['reference']);
 
                 
@@ -489,9 +489,13 @@ function donorprog_admin_ajax_call_bib_update(){
 
 
 
-
     if ($_POST['method']=='Save'){
-    echo $bib_obj->admin_bib_update($data,'save');
+        if (in_array('not found',$data['bibliography'])){
+            return false;
+        }
+        else {
+            echo $bib_obj->admin_bib_update($data,'save');
+        };
     }
     elseif ($_POST['method']=='Remove'){
 

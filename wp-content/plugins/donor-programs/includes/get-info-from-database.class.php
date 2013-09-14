@@ -500,7 +500,7 @@ class getinfofromdatabase{
 		$resp = $wpdb->get_results($sql,ARRAY_A);
 //		print_r($resp);
 //		echo $sql;	
-		return($resp[0]['id']);
+        return (empty($resp)	? 'not found':$resp[0]['id']);
 	}
 
 	function custom_get_outcome_id($name){
@@ -509,7 +509,7 @@ class getinfofromdatabase{
 		$resp = $wpdb->get_results($sql,ARRAY_A);
 //		print_r($resp);
 //		echo $sql;	
-		return($resp[0]['id']);
+        return (empty($resp)	? 'not found':$resp[0]['id']);
     }
 
     function custom_get_relations($id){

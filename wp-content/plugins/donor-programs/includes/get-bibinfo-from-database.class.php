@@ -64,7 +64,7 @@ class getbibinfofromdatabase{
 
             FROM ".$this->table_prefix.$bibtable_name);
 
-//		print_r($sql." ".$where_clause);
+//		print_r(preg_replace("/\s+/"," ",$sql." ".$where_clause));
 		$result = $wpdb->get_results( $sql." ".$where_clause, ARRAY_A);
  
 
@@ -125,7 +125,7 @@ class getbibinfofromdatabase{
         global $wpdb;
 		for($i=0; $i<count($data); $i++){
             $bibdata = current($data);
-            print_r(mysql_real_escape_string($bibdata['author']));
+//            print_r(mysql_real_escape_string($bibdata['author']));
             
             if ($method=='save'){
 				$sql = $wpdb->prepare( "INSERT ".$this->table_prefix."bibdata 
@@ -144,7 +144,7 @@ class getbibinfofromdatabase{
                                         ;" );
 
                 $resp = $wpdb->query( $sql );
-                echo $sql;
+//                echo preg_replace("/\s+/", " ", $sql);
             };
 
             if ($method=='Remove'){

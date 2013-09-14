@@ -519,7 +519,22 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
             <div class="help">
                 <p>
                     <!-- HELP -->
-                    Some help text
+                    To upload data, you must paste in CSV formated data into the box below. You may copy the example text above to test this. 
+
+This data is of the format as in the help box above. If your CSV data has different heading orders, the upload will still work.
+
+Upon clicking submit, the CSV will be parsed into output below. Each row corresponds to an individual relation, with associated parameters.
+You may save each relation individually, or click Save All to create each relation. Edits to each relation will be saved as-is.
+
+Depending upon your display settings, other relations already on the database are stored. The option to show these in tandem with the uploaded relationships
+are for two reasons. The first is for basic error checking: does the interpreted relationship program/outcome pairing make sense with the other data already present. 
+The second reason is so that previous relationships can be overwritten, and thus next to the save options you may save either as a new relationship, or as 
+the relationship ID of a relationship already on the database. 
+
+There are three different display options. The first is 'no display' that does not display the other relationships, and only displays the interpreted relationships.
+The second is 'first line', that just displays the interpreted program/outcome pairing for the first line. This is for use with uploads all of the same program/outcome pairings.
+The final line displays the relationships already known for each line in the CSV. 
+
                 </p>	
             </div>	
             <TEXTAREA name='tallbox' id="donorimport" rows=8 cols=10></TEXTAREA>
@@ -598,9 +613,12 @@ paperid,reference,lower,ES,upper,outcomename,intervention
 
             </div>	
             <TEXTAREA name='tallbox' id="bibimport" rows=8 cols=10></TEXTAREA>
-            <input type="submit" name="bibdisplaye" id="CSVsave" value="Display">	
+<div id="functions" style="text-align:center">
+            <input type="submit" name="bibdisplaye" id="CSVsave" value="Interpret" style="float:left;">	
 
+                <a href=javascript:;"" value="SaveAll" class="button-primary" name="SaveAllh" id="tab-6-applyall" style="margin: 0 auto; display:none"/>Apply all</a>
                 <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-6-refresh" style="float:right;"/>Display</a>
+</div>
         </form>
             <div style="clear:both"></div>
 
@@ -672,7 +690,8 @@ jQuery(document).ready(function(){
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib',data:data, method:'interpret'},
                         function(answer){
                             jQuery('#tabs-6-results').html(answer).show();
-                            jQuery('#form-bib-import>.input-to-remove-import').each(function() { jQuery(this).hide(); });
+                            jQuery('#form-bib-import>.input-to-remove-import').each(function() { jQuery(this).remove(); });
+                            jQuery('#tab-6-applyall').show();
                             return true;
                         }
                     );
@@ -687,6 +706,13 @@ jQuery(document).ready(function(){
                         jQuery(this).addClass('bibclicked');
                 });
 
+                jQuery(document).on('click','#tab-6-applyall', function(event){
+                    //                        console.log('Click event triggered on submit DO');
+ //                   jQuery('.input-to-save-import').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
+                       if (confirm('This will save all interpreted data, or remove ALL data from the database.')){
+                           jQuery('.bib-update-form').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
+                       };
+                });
 
 // JQUERY SAVE CODE:
     // Add in the jQUery for the donorprog_admin_display_interpretation
@@ -694,7 +720,7 @@ jQuery(document).ready(function(){
                     // Parse these data ia an AJAX call
                     $data = jQuery(this).serialize();
                     // Data needs to be placed into an array 
- $method = jQuery(this).children(':submit')                   
+                     $method = jQuery(this).children(':submit')                   
 //                    alert(data);
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'create'},
                         function(answer){
@@ -723,7 +749,7 @@ jQuery(document).ready(function(){
                                 //console.log(selector);
                                 //                                jQuery(selector).find('#status').attr('value','Saved!').show();
                                 jQuery(selector).siblings('.input-status').children('#status').attr('value',$method + 'd').show().css('border-color','green').attr('style','background-color:green!important');
-                                jQuery(selector).children('.input-to-save-import').hide();
+                                jQuery(selector).children('.input-to-save-import').remove();
                             }
                             else {
                                 console.log('The error in the mySQL call is:'); 
@@ -775,7 +801,7 @@ jQuery(document).ready(function(){
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib', method:'display'},
                         function(answer){
                             jQuery('#tabs-6-results').html(answer).show();
-                            jQuery('#form-bib-import>.input-to-save-import').each(function() { jQuery(this).hide(); });
+                            jQuery('#form-bib-import>.input-to-save-import').each(function() { jQuery(this).remove(); });
                             jQuery('.input-status>#status').each(function() { jQuery(this).show(); });
                             return true;
                         }

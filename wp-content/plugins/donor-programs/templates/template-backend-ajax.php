@@ -209,11 +209,12 @@ function donorprog_admin_display_bibliography($bibdata){
 	<div class="spacer"></div>
                 <p class="bibligraphy" style="clear:both">              
                 <div class="bibentrydetail">
-	
-		<?php foreach($bibdata as $bibitem): ?>
+    <?php if(count($bibdata)>0):?>	
+        <?php foreach($bibdata as $bibitem): ?>
             <div class="bibentrylong"  <?php echo 'id=bib'.$bibitem['entries_id'] ?> style="clear:both; display:inline">
                     <form id="form-bib-import" method="post">
                     <?php foreach($bibitem as $key=>$value):
+                            $value = htmlentities($value);
                             ?>
                             <div class="left-form">
                             <label><?php echo $key; ?></label>
@@ -221,20 +222,23 @@ function donorprog_admin_display_bibliography($bibdata){
                             </div>
                     <?php endforeach; ?>
                             <div style="clear: both; margin-bottom:10px;"></div>
-                        <div class="input-to-save-import left-form">
+                        <div class="input-to-save-import bib-update-form left-form">
                             <input value="Save" type="submit" class="button-primary" name="SaveBibdata" />
                         </div>
-                            <div class="input-to-remove-import left-form">
+                            <div class="input-to-remove-import bib-update-form left-form">
                             <input value="Remove" type="submit" class="button-primary" name="RemoveBibdata" />
                         </div>
                     </form>
                         <div class="input-status left-form">
-                            <input class="button-primary" value="Status: pending" id="status" style="display:none" disabled/>
+                            <input class="button-primary" value="Status: On database" id="status" style="display:none" disabled/>
                         </div>
                     
             </div>  
         <div style="clear: both; margin-bottom:10px;"></div>
         <?php endforeach; ?>
+        <?php else: ?>
+            <p> No data found </p>
+        <?php endif; ?>
 
 
 
