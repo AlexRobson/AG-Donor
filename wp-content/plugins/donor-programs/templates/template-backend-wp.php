@@ -32,7 +32,13 @@
 	}
 	.red {
 		background-color: #f7ecec;
-	}
+    }
+    
+    div.hidebuttons a.selected {
+        background: black;
+        color: white;
+    } 
+
 </style>
     
     
@@ -76,7 +82,7 @@
     </div> 
 
 
-	<div id="tabs-1">
+	<div id="tabs-1" class="tabitem">
 		<form id="form-inq-donor-programs" method="post">
 		<?php if( $programs ): ?>
         <table class="wp-list-table widefat fixed" cellspacing="0" border="0">
@@ -154,7 +160,7 @@
 	</div>
    
 
-	<div id="tabs-2">
+	<div id="tabs-2" class="tabitem">
 		<form id="form-inq-donor-outcome" method="post">
 		<?php if( $outcome ): ?>
         <table class="wp-list-table widefat fixed" cellspacing="0" border="0">
@@ -220,7 +226,7 @@
 		</script>
 	</div>
 		
-	<div id="tabs-3">
+	<div id="tabs-3" class="tabitem">
 		<form id="form-inq-donor-relations" method="post">
 			<?php if( $relations ): ?>
 			<table class="wp-list-table widefat fixed" cellspacing="0" border="0">
@@ -427,7 +433,7 @@
 		</script>
 	</div>
 		
-		<div id="tabs-4">
+		<div id="tabs-4" class="tabitem">
 			<form id="form-inq-donor-settings" method="post">
 			<table class="wp-list-table widefat fixed" cellspacing="0" border="0">
 			<thead>
@@ -485,7 +491,7 @@
 		<!-- EXPORT/INPORT CONTROLLER START OF MY EDITS -->
 
 		
-		<div id="tabs-5">
+		<div id="tabs-5" class="tabitem">
 		
         <form id="form-inq-donor-import" method="post">
                 <table class="wp-list-table widefat fixed" cellspacing="0" border="0">
@@ -511,6 +517,8 @@ testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
                         <td>
                             <div class="left-form">
                             <label>Alternatively, upload a CSV</label>
+                            <input type="file" name="CSVupload" id="CSVfile" />  
+                            <button type="submit" name="CSVupload" id="CSVupload">Upload</button>  
                         </div>
                         </td>
                     </tr>                     
@@ -540,12 +548,14 @@ The final line displays the relationships already known for each line in the CSV
             <TEXTAREA name='tallbox' id="donorimport" rows=8 cols=10></TEXTAREA>
             <label> Display options</label>
             <select id="donorimport-display">
-                <option value="1">Display First Line</option>
                 <option value="0">Display None</option>
+                <option value="1">Display First Line</option>
                 <option value="all">Display All</option>
             </select>    
-            <input type="submit" name="CSVsave" id="CSVsave">	
+            <input type="submit" name="CSVtext" id="CSVsave">	
+                <a href=javascript:;"" value="SaveAll" class="button-primary" name="SaveAllh" id="tab-5-applyall" style="margin: 0 auto; display:none"/>Apply all</a>
                 <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-5-refresh" style="float:right;"/>Refresh</a>
+                <a href=javascript:;"" value="Display" class="button" name="Refresh" id="tab-5-display" style="float:right;"/>Display</a>
         </form>
             <div style="clear:both"></div>
 
@@ -558,20 +568,8 @@ The final line displays the relationships already known for each line in the CSV
      </div> 
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
 		
-		<div id="tabs-6">
+		<div id="tabs-6" class="tabitem">
 		
         <form id="form-inq-bib-import" method="post">
                 <table class="wp-list-table widefat fixed" cellspacing="0" border="0">
@@ -587,9 +585,16 @@ The final line displays the relationships already known for each line in the CSV
                             <div class="left-form" style="width:100%;">
                                 <label>Help for submitting CSV: Example text (copy and paste in)</label>
                                 <textarea id="helpsubmitcsv" name="helpsubmitCSV" rows="4" disabled style="background:#dddddd; width:100%;" >
-paperid,reference,lower,ES,upper,outcomename,intervention
-1,"Alam, Baez and Del Carpio (2011). ""Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan"", IZA Discussion Papers.",-0.043428,-0.0154,0.012628,Labor force participation (percentage points),CCTs
-2,"Baez and Camacho (2011). ""Assessing the Long-term Effects of Conditional Cash Transfers on Human Capital Evidence from Colombia"", Policy Research Working Papers.",-0.07464,-0.057,-0.03936,Test scores (standard deviations),CCTs
+paperid,author,year,title,journal,volume,lower,ES,upper,outcomename,intervention
+1,"Alam, Baez and Del Carpio",2011,Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan,IZA Discussion Papers,,-0.303888,-0.0387,0.226488,Labor force participation (percentage points),Conditional Cash Transfers
+1,"Alam, Baez and Del Carpio",2011,Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan,IZA Discussion Papers,,-0.043428,-0.0154,0.012628,Pregnancy rate (percentage points),Conditional Cash Transfers
+2,Baez and Camacho,2011,Assessing the Long-term Effects of Conditional Cash Transfers on Human Capital Evidence from Colombia,Policy Research Working Papers,,-0.07464,-0.057,-0.03936,Test scores (standard deviations),Conditional Cash Transfers
+3,Baird et al.,2009,The short-term impacts of a schooling conditional cash transfer program on the sexual behavior of young women,Impact Evaluation Series No.40: Policy Research Working Papers,19 Suppl,-0.03648,-0.011,0.01448,Pregnancy rate (percentage points),Conditional Cash Transfers
+4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,-0.0098,0.049,0.1078,Attendance rate (percentage points),Conditional Cash Transfers
+4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,0.06576,0.103,0.14024,Enrollment rate (percentage points),Conditional Cash Transfers
+4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,0.0856,0.115,0.1444,Retention rate (percentage points),Conditional Cash Transfers
+4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,-0.01612,0.027,0.07012,Test scores (standard deviations),Conditional Cash Transfers
+5,Borraz and Gonzalez,2009,Impact of the Uruguayan Conditional Cash Transfer Program,Cuadernos de Economia,46,-4.678366,-3.426377,-2.174388,Labor hours (hours),Conditional Cash Transfers
                                 </textarea>   
                          </div>
                         </td>
@@ -598,6 +603,8 @@ paperid,reference,lower,ES,upper,outcomename,intervention
                         <td>
                             <div class="left-form">
                             <label>Alternatively, upload a CSV</label>
+            <input type="file" name="CSVupload" id="CSVfile" />  
+            <button type="submit" id="CSVupload">Upload</button>  
                         </div>
                         </td>
                     </tr>                     
@@ -631,7 +638,7 @@ paperid,reference,lower,ES,upper,outcomename,intervention
 </div>
 
 
-        <div id="tabs-7">
+        <div id="tabs-7" class="tabitem">
 
 
 
@@ -662,31 +669,101 @@ paperid,reference,lower,ES,upper,outcomename,intervention
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-
-                jQuery('#form-inq-donor-import').submit(function(){
-                    jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
-                    var data = jQuery(this).children('#donorimport').val();
-                    var method = jQuery(this).children('#donorimport-display').val();
-                    // Parse these data ia an AJAX call
+    
+                // Parse relations
+    jQuery('#form-inq-donor-import').submit(function(){
+        console.log('Relations form subbmited'); 
+        jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
+        $uploadtype = jQuery(this).find("input[type='submit'].formclicked").attr('name');
+        console.log($uploadtype);
+        switch($uploadtype) {
+            case 'CSVtext':
+                var data = jQuery(this).children('#donorimport').val();
+                var method = jQuery(this).children('#donorimport-display').val();
                 jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_action',data:data, method:method},
-                    function(answer){
-                            jQuery('#detect-fields').html(answer).show();
-                            return true;
-                            
-                        }
-                        );
-                        return false;
+                function(answer){
+                    jQuery('#detect-fields').html(answer).show();
+                    jQuery('#tab-5-applyall').show();
+                        return true;
+                        
+                    }
+                );
+                break;
+            case 'CSVupload':
+                jQuery(this).children('#donorimport').val('');
+                jQuery(this).children('#detect-fields').html('');
+                break;
+        } 
+        jQuery(this).find('.formclicked').removeClass('formclicked');
+        return false;
+    });
+
+                // Display relations
+                //
+                jQuery(document).on('click','#tab-5-display', function(event){
+                    jQuery('#toggletab3').click();
                 });
+                                
+                // Save relations
+                jQuery(document).on('submit','#form-donor-import' ,function(){
+                    $data = jQuery(this).serialize();
+                    var selector = jQuery(this);
+                    $method = jQuery(this).find(".formclicked").attr('value');
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'create'},
+                        function(answer){
+                            if(jQuery.isNumeric(answer)){
+                                if(answer>0) { 
+ //                                   jQuery(selector).find('#relationid').show().attr('value',answer);
+                                    jQuery(selector).siblings('.input-status').children('#status').attr('value',$method + 'd' + ':' + answer).show().css('border-color','green').attr('style','background-color:green!important');
+                                    jQuery(selector).children('.tab-5-interpret-options').remove();
+                                    jQuery(selector).find(".formclicked").removeClass('.formclicked');
+                                    jQuery('#tabs-3').html('<p> You have changed, or attempted to change, the stored relations. You should refresh </p>');
+                                }
+                                else {
+                                    jQuery(selector).find(".formclicked").removeClass('.formclicked');
+                                } 
+                            }
+                            
+                            else {
+                            
+                            }
 
+                            return true;
+                        }
+                    );
+                    return false;
+                }); 
 
-    // JQuery for the donorprog_admin_display_bibligraphy
+                // Save Relation values
+                function save_outcome_values(data){                        
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:data, method:'create'},
+                        function(answer){
+                            return answer;
+                        });
+                };
+                
+                // Remove relations
+                jQuery(document).on('submit','#form-donor-relation' ,function(){
+                    $data = jQuery(this).serialize();
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'remove'},
+                        function(answer){
+                            if(answer == 1) {
+                                alert(answer);
 
+                            }
+                            else {
+                                alert(answer);
+
+                            }
+                            return true;
+                        }
+                    );
+                    return false;
+                }); 
+
+                // Interpret bibligraphyy
                 jQuery(document).on('submit','#form-inq-bib-import' ,function(){
-                    // Parse these data ia an AJAX call
-//                    jQuery('#tabs-6-results').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
                     data = encodeURIComponent(jQuery(this).children('#bibimport').val());
-//                    console.log(data);
-                    // Data needs to be placed into an array 
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib',data:data, method:'interpret'},
                         function(answer){
                             jQuery('#tabs-6-results').html(answer).show();
@@ -697,90 +774,26 @@ jQuery(document).ready(function(){
                     );
                     return false;
                 }); 
-                // JQuery remove code:
-                // This should be before the delegation/
-
-
-                jQuery(document).on('click',"input[type='submit']", function(event){
-//                        console.log('Click event triggered on submit DO');
-                        jQuery(this).addClass('bibclicked');
-                });
-
-                jQuery(document).on('click','#tab-6-applyall', function(event){
-                    //                        console.log('Click event triggered on submit DO');
- //                   jQuery('.input-to-save-import').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
-                       if (confirm('This will save all interpreted data, or remove ALL data from the database.')){
-                           jQuery('.bib-update-form').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
-                       };
-                });
-
-// JQUERY SAVE CODE:
-    // Add in the jQUery for the donorprog_admin_display_interpretation
-                jQuery(document).on('submit','#form-donor-import' ,function(){
-                    // Parse these data ia an AJAX call
-                    $data = jQuery(this).serialize();
-                    // Data needs to be placed into an array 
-                     $method = jQuery(this).children(':submit')                   
-//                    alert(data);
-                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'create'},
-                        function(answer){
-                            jQuery('#success').html('<p> A new relation created with ID ' + answer +  '. To view it click Refresh </p>').show();
-                            return true;
-                        }
-                    );
-                    return false;
-                }); 
-
-    // Add in the jQUery for the admin_bib_updaten
+                
+                // Save/Remove bibliography
                 jQuery(document).on('submit','#form-bib-import' ,function(event){
-                    // Parse these data ia an AJAX call
                     $data = jQuery(this).serialize();
                     var selector = jQuery(this);
-//                    console.log('First');
-                    //                    console.log(selector)
-                    //
-                    //
-                   // Add in jQuery for adding class 'clicked' for clicked submit
-                    //                    console.log(jQuery(this).find(".bibclicked").attr('value'));
-                    $method = jQuery(this).find(".bibclicked").attr('value');
+                    $method = jQuery(this).find(".formclicked").attr('value');
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib_update',data:$data, method:$method},
                         function(answer){
                             if(answer == 1) {
-                                //console.log(selector);
-                                //                                jQuery(selector).find('#status').attr('value','Saved!').show();
                                 jQuery(selector).siblings('.input-status').children('#status').attr('value',$method + 'd').show().css('border-color','green').attr('style','background-color:green!important');
                                 jQuery(selector).children('.input-to-save-import').remove();
+                                jQuery(selector).find(".formclicked").removeClass('.formclicked');
                             }
                             else {
-                                console.log('The error in the mySQL call is:'); 
-                                console.log(answer); 
+//                                console.log('The error in the mySQL call is:'); 
+//                                console.log(answer); 
                                 jQuery(selector).siblings('.input-status').children('#status').attr('value','Error').show().css('border-color','red').attr('style','background-color:red!important');
-                                //                          console.log(selector); 
-//                                jQuery(selector).find('#status').attr('value','Error!').show();
+                                jQuery(selector).find(".formclicked").removeClass('.formclicked');
                             }
                             // Remove the clicked class
-                            
-                            return true;
-                        }
-                    );
-//                    $method = jQuery(this).find('.bibclicked').removeClass('.bibclicked');
-                    return false;
-                }); 
-
-                // 
-                
-
-            
-// JQUERY REMOVE CODE
-    // Add in the jQUery for the donorprog_admin_display_recorded_outcomesn
-                jQuery(document).on('submit','#form-donor-relation' ,function(){
-                    // Parse these data ia an AJAX call
-                    $data = jQuery(this).serialize();
-                    // Data needs to be placed into an array 
-                    
-                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'remove'},
-                        function(answer){
-                            jQuery('#success').html('<p> The relation with ID ' + answer + ' has been removed. </p>').show();
                             return true;
                         }
                     );
@@ -788,7 +801,9 @@ jQuery(document).ready(function(){
                 }); 
 
 
-            // JQUERY Update code
+
+                // Refresh code
+
                 jQuery('#tab-5-refresh').on('click',function(){
                     jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">');
                     jQuery('#success').html('');
@@ -796,8 +811,6 @@ jQuery(document).ready(function(){
                 });
 
                 jQuery('#tab-6-refresh').on('click',function(){
-                    
-                    jQuery('#detect-fields').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_bib', method:'display'},
                         function(answer){
                             jQuery('#tabs-6-results').html(answer).show();
@@ -808,6 +821,24 @@ jQuery(document).ready(function(){
                     );
                     return false;
                 });
+
+                // Apply all code
+                jQuery(document).on('click','#tab-5-applyall', function(event){
+                       if (confirm('This will save all interpreted data, or remove ALL data from the database.')){
+                           jQuery('.relations-update-form').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
+                       };
+                });
+
+                jQuery(document).on('click','#tab-6-applyall', function(event){
+                       if (confirm('This will save all interpreted data, or remove ALL data from the database.')){
+                           jQuery('.bib-update-form').each( function() { jQuery(this).children("input[type='submit']").click(); } ); 
+                       };
+                });
+                jQuery(document).on('click',"input[type='submit']", function(event){
+                        jQuery(this).addClass('formclicked');
+                });
+
+
   
 });                
 
@@ -828,21 +859,40 @@ jQuery(document).ready(function(){
 
 
             jQuery('#toggletab1').click(function() {
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-1').toggle();
             });
             jQuery('#toggletab2').click(function() {
+
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-2').toggle();
             });
             jQuery('#toggletab3').click(function() {
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-3').toggle();
             });
             jQuery('#toggletab4').click(function() {
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-4').toggle();
             });
             jQuery('#toggletab5').click(function() {
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-5').toggle();
             });
             jQuery('#toggletab6').click(function() {
+                jQuery('.tabitem').each(function() { jQuery(this).hide();} );
+                jQuery('.hidebuttons a.button').each(function() { jQuery(this).removeClass('selected');} );
+                jQuery(this).addClass('selected')
                jQuery('#tabs-6').toggle();
             });
 });
@@ -864,7 +914,7 @@ jQuery(document).ready(function(){
 
 	<script type="text/javascript">
 	//<!--
-		jQuery(document).ready(function(){
+		jQuery(document).load(function(){
 			<?php if( isset($_POST['program']) || isset($_POST['outcome']) || isset($_POST['relations']) ): ?>
 			jQuery("#notifications .updated-inq").show();
 			<?php endif; ?>

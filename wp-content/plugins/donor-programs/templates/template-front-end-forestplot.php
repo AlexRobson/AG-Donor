@@ -14,8 +14,6 @@
 ?>
 
 
-
-
 <?php if( !$data ): ?>
 <h3 style="text-align: center;">0 studies have been found. Please change your criteria and submit your search again.</h3>
 <style type="text/css"> .result{ margin-bottom: 0px !important; } </style>
@@ -76,7 +74,7 @@
 	}
 	?>
 	<?php	
-	for( $i=0; $i<count($data); $i++ ):
+    for( $i=0; $i<count($data); $i++ ):
 	if( $data[$i]['lower'] < $data[$i]['upper'] && $data[$i]['lower']<=$data[$i]['mean'] && $data[$i]['upper']>=$data[$i]['mean'] ):
 		
 		$limit_off_left = false;
@@ -102,23 +100,27 @@
 		
 		//print_r( $adjust_tool_tip_value_units ); exit;
 ?>
-<div class="result-info<?php echo ($i==0)?' meta':(($i+1==count($data))?' last paper':' paper'); ?>">
+
+<div class="result-info<?php echo ($i==0)?' meta':(($i+1==count($data))?' last paper" style="display:none':' paper" style="display:none'); ?>">
     <div class=nameblock" style="float:left">
         <div class="nameblock-data">
         <p class="name" style="margin: 0; float:none"><?php echo $data[$i]['name']; ?>
 <?php if ($i==0): ?>
     </p>
     <div class="metabutton">
-                <p class="meta-buttons" style=height:16px;">
-                <a href="javascript:;" class="button" id="togglestudy" >&nbsp</a> 
-                <a href="javascript:;" class="button" id="togglepapers">&nbsp</a> 
-                <a href="javascript:;" class="button" id="downloaddata">&nbsp</a>
+                <p class="meta-buttons">
+                <a href="javascript:;" class="button" id="togglestudy" >Studies</a> 
+                <a href="javascript:;" class="button" id="downloaddata">Download</a>
+
+                
                 </p>
                 <p class="button-description"></p>
     </div> 
+
 <?php else: ?>
-        (<?php echo $bibdata[$i]['year']?>)</p>
+        (<?php echo $data[$i]['year']?>)</p>
         <p class="weight" style="margin: 0; float:none">Weighting: <?php echo sprintf('%0.2f',100*$data[$i]['weight']); ?>%</p>
+
 <?php endif; ?>
     </div>
     </div > 
@@ -175,7 +177,6 @@
 	endfor;
 ?>
 <div class="null-top"></div>
-<div class="null-bottom"></div>
 <?php if( $template == 'programs' && $data[$i-1]['link_donate'] ): ?>
 	<a href="<?php echo $data[$i-1]['link_donate']; ?>" target="_blank" class="donate-program-button">DONATE TO THIS PROGRAM</a>
 <?php else: ?>
@@ -188,7 +189,6 @@
 //<!--
 	jQuery(document).ready(function(){		
         jQuery('span.tooltip a').powerTip({placement: 'n'});
-//        alert(this);
 		var $zoom_value = 10;
 		var $max = false;
 		jQuery("#scale-zoom a").click(function(e){
@@ -256,22 +256,19 @@
                 jQuery(this).find('.weight').removeClass('selected');
             });
             jQuery('#togglestudy').mouseenter(function() {
-               jQuery('.button-description').html('Toggle Studies').addClass('selected');
+               jQuery('.button-description').html('Breakdown of individual studies').addClass('selected');
             });
             jQuery('#togglestudy').click(function() {
-                jQuery('.result-info.paper').toggle();
+                jQuery('.result-info.paper').slideToggle();
             });
-            jQuery('#togglepapers').click(function() {
-                jQuery('.bibliography').toggle();
+            jQuery('#togglestudy').click(function() {
+                jQuery('.bibliography').slideToggle();
             });
             jQuery('#downloaddata').click(function() {
                 // Add action
             });
-            jQuery('#togglepapers').mouseenter(function() {
-               jQuery('.button-description').html('Toggle Papers').addClass('selected');
-            });
             jQuery('#downloaddata').mouseenter(function() {
-               jQuery('.button-description').html('Download Data').addClass('selected');
+               jQuery('.button-description').html('Download a CSV of these data').addClass('selected');
             });
             jQuery('#togglestudy, #togglepapers, #downloaddata').mouseleave(function() {
                jQuery('.button-description').html('').removeClass('selected');
@@ -286,125 +283,12 @@
 
 
 
-<!--
-<script type="text/javascript">
-        // Make changes to CSS styling to reflect weighting
-        jQuery(document).ready(){
-            jQuery('result-in').each(function(index){
 
 
-
-
-</script>
--->
 
 
 
 <?php endif; ?>
+    
+    
 
-
-<style type="text/css">
-.result-in {border-bottom: solid 1px #cfcfcf;}
-.result-info.paper p.name {font-size:14px; padding: 30px 0px 15px 10px;}
-.result-info.meta p.name  {padding: 20px 0px 15px 0px}
-.result-info.last {padding: 0px 0px 25px 0px; }
-
-.result-info p.button-description {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#f5f5f5; height: 12px; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y;}
-.result-info p.weight {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#bababa; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y; }
-.result-info p.weight.selected {color:#a7a7a7;} 
-
-
-p.button-description.selected {color:#bababa} 
-
-.download-data-button {
-background: url(../wp-content/themes/aidgrade/images/bg-donor-button.png) 0px 0px repeat-x;
-position: absolute;
-bottom: -50px;
-left: 395px;
-border: 1px solid #dadada;
-padding: 8px 13px;
-color: #3d3d3d;
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-font-size: 13px;
--webkit-border-radius: 20px;
--moz-border-radius: 20px;
--ms-border-radius: 20px;
--o-border-radius: 20px;
-border-radius: 20px;
-}
-
-.meta-buttons {
-    height:16px;
-    padding-top: 10px:
-    padding-bottom: 10px;
-background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y;
-
-}
-
-.meta-buttons .button {
-width: 19px;
-height: 19px;
-margin-left: 20px;
-background: url(../wp-content/themes/aidgrade/images/icon_question.png) no-repeat;
-background-size: 25px 25px;
-display:inline-block;
-}
-#togglestudy {
-
-background: url(../wp-content/plugins/donor-programs/templates/images/Zoom.png) no-repeat;
-}
-
-#togglepapers {
-
-background: url(../wp-content/plugins/donor-programs/templates/images/Document.png) no-repeat;
-}
-
-
-#downloaddata {
-
-background: url(../wp-content/plugins/donor-programs/templates/images/Download.png) no-repeat;
-}
-#biblistheader {
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-font-weight: bold;
-font-size: 18px;
-color: #3e3e3e;
-}
-.bibentrylong .title {
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-font-weight: bold;
-font-size: 14px;
-
-}
-
-
-.bibliography ol {
-
-list-style-type: square;
-padding-left: 20px;
-
-}
-
-
-.title {
-color: #3e3e3e;
-}
-.result {
-
-}
-
-/* OVERRIDE */
-
-.result-info.paper p.name {
-    padding:30px 10px 15px 10px;
-    background:none;
-    width: auto;
-}
-
-.result-info.meta {
-    margin:0px;
-    padding: 0 10px 0 20px;
-border-bottom: solid 1px #cfcfcf;
-}
-
-</style>

@@ -4,8 +4,8 @@
 	/*background: url(../images/bg_tooltip.png) scroll repeat-x 0 0 #232322;*/
 	background-color: #232322;
 	border-radius: 6px;
-	font-family: Pompiere, Arial;
-	font-size: 21px;
+	font-family: 'Open Sans', Arial;
+	font-size: 16px;
 	color: #89c422;
 	display: none;
 	padding: 7px 10px 8px 10px;

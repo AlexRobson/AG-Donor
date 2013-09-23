@@ -174,7 +174,7 @@
 //<!--
 	jQuery(document).ready(function(){		
         jQuery('span.tooltip a').powerTip({placement: 'n'});
-        alert(this);
+//        alert(this);
 		var $zoom_value = 10;
 		var $max = false;
 		jQuery("#scale-zoom a").click(function(e){

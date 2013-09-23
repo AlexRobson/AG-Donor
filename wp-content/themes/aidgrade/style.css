@@ -717,7 +717,9 @@ body.page #content input:focus {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
 }
 body.page #content input.submit,
-body.page #content input[type=submit] {
+body.page #content input[type=submit],
+div.metabutton a.button
+{
   width: auto !important;
   height: 34px;
   background: url(images/bg_button_form.jpg) repeat-x;
@@ -2385,8 +2387,8 @@ a.button-portfolio {
 .result p.title-outcome {
   width: 310px;
   background: url(images/bg_effects.jpg) top right repeat-y;
-  font-family: 'Pompiere', Arial, Helvetica, sans-serif;
-  font-size: 20px;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 16px;
   color: #bababa;
   margin: 0 0 0 20px;
   float: left;
@@ -2395,8 +2397,8 @@ a.button-portfolio {
   width: 310px;
   background: url(images/bg_effects.jpg) top right repeat-y;
   background: none;
-  font-family: 'Pompiere', Arial, Helvetica, sans-serif;
-  font-size: 20px;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 16px;
   color: #bababa;
   margin: 0 0 0 20px;
   float: left;
@@ -3586,5 +3588,118 @@ margin-right: 5px;
 
 #bibtoggle {
 margin-bottom: 10px;
+}
+
+
+.result-in {border-bottom: solid 1px #cfcfcf;}
+.result-info.paper p.name {font-size:14px; padding: 30px 0px 15px 10px;}
+.result-info.meta p.name  {padding: 20px 0px 15px 0px}
+.result-info.last {padding: 0px 0px 25px 0px; }
+
+.result-info p.button-description {margin-top:10px; text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#f5f5f5; height: 16px; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y;}
+.result-info p.weight {text-indent: 20px; font-size: 12px; padding: 10px 0px 10px 0px; color:#bababa; background: url(../wp-content/themes/aidgrade/images/bg_effects.jpg) top right repeat-y; }
+.result-info p.weight.selected {color:#a7a7a7;} 
+
+
+p.button-description.selected {color:#bababa} 
+
+.download-data-button {
+background: url(../wp-content/themes/aidgrade/images/bg-donor-button.png) 0px 0px repeat-x;
+position: absolute;
+bottom: -50px;
+left: 395px;
+border: 1px solid #dadada;
+padding: 8px 13px;
+color: #3d3d3d;
+font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+font-size: 13px;
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+-ms-border-radius: 20px;
+-o-border-radius: 20px;
+border-radius: 20px;
+}
+
+.meta-buttons {
+    height:40px;
+    padding-top: 10px:
+    padding-bottom: 10px;
+
+}
+
+p.meta-buttons a.button {
+  margin-left: 5px !important;
+  line-height:34px;
+width: 19px;
+height: 19px;
+margin-left: 20px;
+display:inline-block;
+  font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+background: #bababa;
+color: #3e3e3e;
+}
+
+.meta-buttons p {
+  vertical-align: center;
+}
+/*
+#togglestudy {
+
+background: url(images_extra/Zoom.png) no-repeat;
+}
+
+#togglepapers {
+
+background: url(images_extra/Document.png) no-repeat;
+}
+
+#downloaddata {
+background: url(images_extra/Download.png) no-repeat;
+}
+*/
+#biblistheader {
+font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+font-weight: bold;
+font-size: 18px;
+color: #3e3e3e;
+}
+.bibentrylong .title {
+font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+font-weight: bold;
+font-size: 14px;
+
+}
+
+
+.bibliography ol {
+
+list-style-type: square;
+padding-left: 20px;
+
+}
+
+
+.title {
+color: #3e3e3e;
+}
+.result {
+
+}
+
+/* OVERRIDE */
+
+.result-info.paper p.name {
+    padding:30px 10px 15px 10px;
+    background:none;
+    width: auto;
+    text-transform: none;
+}
+
+.result-info.meta {
+    margin:0px;
+    padding: 0 10px 0 20px;
+border-bottom: solid 1px #cfcfcf;
 }
 

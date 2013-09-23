@@ -209,7 +209,8 @@ class getinfofromdatabase{
 								".$this->table_prefix."outcome_values.`upper`,
 								".$this->table_prefix."outcome_values.unit,
 								".$this->table_prefix."programs.link_donate,
-								".$this->table_prefix."programs.name AS prog_name
+                                ".$this->table_prefix."programs.name AS prog_name,
+                                ".$this->table_prefix."outcome_values.relation_id
 							FROM 
 								".$this->table_prefix."outcomes 
 								Inner Join ".$this->table_prefix."relations ON ".$this->table_prefix."relations.outcome_id = ".$this->table_prefix."outcomes.id 
@@ -229,9 +230,21 @@ class getinfofromdatabase{
 		$numbers = range(1,200);
 		shuffle($numbers);
 		$numstudies = 5;
-		$result[0]['bibindex'] = array_slice($numbers,0,$numstudies);
+        $result[0]['bibindex'] = array_slice($numbers,0,$numstudies);
+        $result[0]['bibindex'] = null;
 		include 'get-bibinfo-from-database.class.php';
+        //        $db_bibobj = new getbibinfofromdatabase;
+        $sql = $wpdb->prepare("SELECT 
+                            bibref
+                            FROM
+                            ".$this->table_prefix."outcome_values
+                            WHERE relation_id = '".$result[0]['relation_id']."'
+                            ;");
+        //        echo $sql;
 
+        $bibindex = $wpdb->get_results($sql, ARRAY_A); 
+        $result[0]['bibindex'] = explode(';',$bibindex[0]['bibref']);
+//        print_r($result);
 		return $result;
 	}
 
@@ -409,7 +422,7 @@ class getinfofromdatabase{
 
 //				 echo preg_replace('/(\s)+/', ' ',$sql); exit;
 			next($data);
-		}	
+        }	
 		return $resp;
 	}
 	
@@ -446,7 +459,7 @@ class getinfofromdatabase{
 	
 	function admin_save_relations( $data = null ){
 		if($data){
-            //			echo '<pre>';print_r( $data );echo '</pre>';
+           // 			echo '<pre>';print_r( $data );echo '</pre>';
 //            echo count($data);
 			global $wpdb;
 			reset($data);
@@ -456,20 +469,21 @@ class getinfofromdatabase{
 				if( isset($relations[$i]['remove']) && $relations[$i]['remove'] == 'on' ){
 					$this->admin_remove_relation( $relations[$i]['id'], $wpdb );
 				}
-				elseif( isset($relations[$i]['id']) ){
+                elseif( isset($relations[$i]['id']) ){
 					$sql = $wpdb->prepare( "UPDATE ".$this->table_prefix."relations SET program_id='".$relations[$i]['program_id']."', outcome_id='".$relations[$i]['outcome_id']."' WHERE id='".$relations[$i]['id']."';" );
 					$resp = $wpdb->query( $sql );
 					if( isset( $relations[$i]['outcome_values'] ) ){
-						$this->save_outcome_values( $relations[$i]['outcome_values'], $relations[$i]['id'], $wpdb );
-					}
+						$resp2 = $this->save_outcome_values( $relations[$i]['outcome_values'], $relations[$i]['id'], $wpdb );
+                    };
 				}
 				else{
 					if( $relations[$i]['program_id'] && $relations[$i]['outcome_id'] ){
 						$sql = $wpdb->prepare( "INSERT INTO " . $this->table_prefix . "relations VALUES ( '', '".$relations[$i]['program_id']."', '".$relations[$i]['outcome_id']."' );" );
                         $resp = $wpdb->query( $sql );
                         // Next line has been added
+//                        return $resp;
                         return mysql_insert_id();
-                        exit;
+//                        exit;
 					}
 				}
                // 			print_r($sql);

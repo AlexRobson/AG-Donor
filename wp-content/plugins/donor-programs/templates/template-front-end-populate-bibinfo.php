@@ -14,7 +14,7 @@
 
 ?>
 <div class="result-in" style="position:relative";>
-<?php echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data,$template,$selection_name); ?>
+<?php echo display_metaresults_with_papers($bibdb_obj, $bibdata,$data,$template,$selection_name); ?>
 </div>
 <div class="papers">
 <?php echo display_papers($bibdata); ?>
@@ -38,25 +38,40 @@ function populate_bibup($bibdata){
 	<?php
 }
 
-function display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$metastudydata,$template,$selection_name){
-
+function display_metaresults_with_papers($bibdb_obj, $single_studies,$metastudydata,$template,$selection_name){
+    if(isset($single_studies)){
     # Construct the data to represent the individual studies comprising the requested meta-analysis
-    # Variables include lower, mean, upper, weighting etc.
-    $single_studies = $bibdb_obj->get_paper_data($bibindexarray);
-//    $metastudydata[0]['weight']=1; 
-	foreach($single_studies as $i=>$item){
-        	$single_studies[$i]['name'] = $bibdata[$i]['author'];
+        # Variables include lower, mean, upper, weighting etc.
+
+        if(!empty($single_studies)){
+        array_unshift($single_studies,$metastudydata[0]);
+        $data = $single_studies;
+        foreach ($data as $i=>$datum){
+            $data[$i]['lower'] =  roundsf($datum['lower'],3);
+            $data[$i]['upper'] =  roundsf($datum['upper'],3);
+            $data[$i]['mean'] =  roundsf($datum['mean'],3); 
+        }
+        unset($i);
+//        echo "<pre>"; print_r($data[count($data)-1]); echo "</pre>";
+
+
+        include 'template-front-end-forestplot.php';
+        }
+        else{
+            $data = $metastudydata; 
+
+            $data[0]['name'] = $data[0]['name']." (Missing studies)";
+        include 'template-front-end-results.php';
+        }
     }
-    array_unshift($single_studies,$metastudydata[0]);
-    
-  //  print "<pre>"; print_r($single_studies); print "</pre>";
-    $data = $single_studies;
-    
-    include 'template-front-end-forestplot.php';
+    else{
+        $data = $metastudydata; 
+        $data[0]['name'] = $data[0]['name']." (Missing studies)";
+        include 'template-front-end-results.php';
+    };
 }
 
 function display_papers($bibdata){
-
 ?>
     <div class="bibliography" style="display:none">
 
@@ -64,6 +79,7 @@ function display_papers($bibdata){
                 <p class="bibligraphy" style="clear:both">              
                 <div class="bibentrydetail">
 	
+<?php if(isset($bibdata)){ ?>
 		<p id="biblistheader">
 		Contributing Papers
         </p>
@@ -75,13 +91,16 @@ function display_papers($bibdata){
                     <?php echo $bibitem['author']; echo " (".$bibitem['year'].")";?>
                     </p>
                     <p class="title">
-                    <?php echo $bibitem['title'] ?>
-                    </li>    
+                    "<?php echo $bibitem['title'] ?>"
                     </p>
+                    <p class="title">
+                    <?php echo $bibitem['journal'] ?>
+                    </p>
+                    </li>    
       		</div>    
         <?php endforeach; ?>
         </ol>
-
+<?php } ?>
 
 
 	</div>

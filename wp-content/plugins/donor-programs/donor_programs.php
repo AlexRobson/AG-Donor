@@ -212,8 +212,7 @@ function get_results_with_bibinfo( $data = array(), $template = null, $selection
     $bibdb_obj = new getbibinfofromdatabase();
     $bibindexarray = $data[0]['bibindex'];;
     $bibdata = $bibdb_obj->get_bibdata($bibindexarray);
-
-
+    include 'includes/numberformat.php';
     include 'templates/template-front-end-populate-bibinfo.php';
 //	echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data);
 //    echo display_papers($bibdata);
@@ -309,7 +308,7 @@ function mouse_over_mean_text( $mean = null, $name = null, $unit = null, $templa
 
 
 add_action('wp_ajax_donoradmin_action', 'donorprog_admin_ajax_call');
-add_action('wp_ajax_nopriv_donoradmin_action', 'donorprog_admin_ajax_call');
+//add_action('wp_ajax_nopriv_donoradmin_action', 'donorprog_admin_ajax_call');
 function donorprog_admin_ajax_call(){
 
     include 'includes/get-info-from-database.class.php';
@@ -327,20 +326,20 @@ function donorprog_admin_ajax_call(){
             };   
 //        echo "<pre>"; print_r($keys); echo "</pre>";
     };
-
-    echo display_interpretation_header();
-
+//    echo display_interpretation_header();
     foreach ($csv as $i=>$line) {
         $id['program_id'] = $db_obj->custom_get_program_id($line['program']); 
         $id['outcome_id'] = $db_obj->custom_get_outcome_id($line['outcome']);  
         $rids = $db_obj->custom_get_relations($id);
-        $bibdata = $bib_obj->get_bibdata(explode(";",$line['papernumbers']));
-        $citearray = array();
-        foreach ($bibdata as $b=>$bibitem) {
-            $citearray[$b] = $bibitem['cite_key'];
-        };
-        $csv[$i]['bibdata'] = implode(',',$citearray);
+        $paperid = explode(";",$line['papernumbers']);
+        $bibdata = $bib_obj->get_paper_bibdata($paperid);
 
+
+        if(isset($bibdata)){  foreach ($bibdata as $b=>$bibitem) {
+            $citearray[$b] = $bibitem['author']."(".$bibitem['year'].")";
+        };
+        $csv[$i]['bibdata'] = implode(', ',$citearray);
+        }
         echo  donorprog_admin_display_intepretation($csv[$i],$db_obj,$rids);
         // For each relatiion ID, get the stored outcome values
     };
@@ -357,7 +356,6 @@ function donorprog_admin_ajax_call(){
         echo '<div class="outcome_array">';
         foreach ($rids as $j=>$rid){
             echo donorprog_admin_display_recorded_outcomes($db_obj->admin_get_outcome_values($rid['id']), $rid['id'],$id );
-        //    if ($j==3){ break; };
         };
         echo '</div>';
 
@@ -373,9 +371,10 @@ function donorprog_admin_ajax_call_update(){
     $db_obj = new getinfofromdatabase();
     $relations = str_replace('position','0',$_POST['relations']);  
     parse_str(urldecode($relations),$relations);
+    
 
-
-	$relations['relations']['relation_id'] = 'relation_id';//count($db_obj->admin_get_relations());
+    $relations['relations']['relation_id'] = 'relation_id';//count($db_obj->admin_get_relations());
+    if($relations['relations']['id'] =="NULL"){ unset($relations['relations']['id']);};
     if( isset($_POST['relations']) ){
         if ($_POST['method']=='create'){
 //        echo '<pre>';print_r( $relations );echo '</pre>'; exit;
@@ -383,15 +382,13 @@ function donorprog_admin_ajax_call_update(){
         $relations['relations']['id'] = $new_id;
         $db_obj->admin_save_relations($relations);
         echo $new_id;
- //       return $new_id;
         }
         elseif ($_POST['method']=='remove'){
-            $relations['relations']['remove'] = 'on';
+           $relations['relations']['remove'] = 'on';
            $relations['relations']['id'] = $relations['relations-id']; 
-
-        echo '<pre>';print_r( $relations );echo '</pre>'; exit;
-        $db_obj->admin_save_relations($relations);
-        echo $relations['relations']['id'];
+//        echo '<pre>';print_r( $relations );echo '</pre>'; exit;
+            $db_obj->admin_save_relations($relations);
+        //        echo $relations['relations']['id'];
         }
     };
 
@@ -434,43 +431,24 @@ function donorprog_admin_ajax_call_bib(){
                     next;
                 };
 
+        $temp = str_replace(')','',explode('(',$csv[$i]['outcomename']));
+                                        $csv[$i]['units'] = $temp[1];
+                                        $temp  = (explode('(',$csv[$i]['outcomename']));
+                                                                $csv[$i]['outcomename'] = strtolower($temp[0]);
 
-                
-                // Calculate $bibdata
-                //
-                // Calculate reference data
-                //
-                $reference = $csv[$i]['reference'];
-                $temp = explode('.',$reference);
-                $temp2 = explode('(',$temp[0]);
-                $csv[$i]['author'] = ($temp2[0]);
-                $csv[$i]['year'] = str_replace(')','',$temp2[1]);
-                $temp = explode(',',$temp[1]);
 
-                $csv[$i]['title'] = ($temp[0]);
-                $csv[$i]['journal'] = $temp[1];
-                $csv[$i]['units'] = str_replace(')','',explode('(',$csv[$i]['outcomename'])[1]);                        
-                $csv[$i]['outcomename'] = explode('(',$csv[$i]['outcomename'])[0];
+
 
 //            echo "<pre>"; print_r($csv); echo "</pre>";
-                    
+ 
+
                 $csv[$i]['program'] = $db_obj->custom_get_program_id($csv[$i]['intervention']); 
                 $csv[$i]['outcome'] = $db_obj->custom_get_outcome_id($csv[$i]['outcomename']);  
 //                unset($csv[$i]['reference']);
-
                 
             };  
-
-
                 echo donorprog_admin_display_bibliography($csv);
-
-
-
         };
-
-       //    echo "Interpreting data..."; 
-        //
-
     }
 
 die(); // Prevent the trailing zero from appearing
