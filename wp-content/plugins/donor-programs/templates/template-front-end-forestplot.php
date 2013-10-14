@@ -266,6 +266,22 @@
             });
             jQuery('#downloaddata').click(function() {
                 // Add action
+                $data = null; 
+                var selector = jQuery(this);
+                
+                $data = <? echo json_encode($data); ?>;
+                jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'downloadcsv', data:$data},
+                    function(answer){
+                        //http://localhost/dev/aidgrade/html/wp-content/plugins/donor-programs/data/results1380492577.csv
+                        var url =answer;
+                        console.log(answer);
+                        console.log($data);
+                        //    jQuery(selector).attr('href', url).text('Ready!');
+                        downloadcsv(url);
+                        return false;
+                    }
+                    );
+                return false;
             });
             jQuery('#downloaddata').mouseenter(function() {
                jQuery('.button-description').html('Download a CSV of these data').addClass('selected');
@@ -277,6 +293,10 @@
 
         });
 
+        function downloadcsv(url){
+            window.location.href = url;
+            return false;
+        } 
 
 </script>
 

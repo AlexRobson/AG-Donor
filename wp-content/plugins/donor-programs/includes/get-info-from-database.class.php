@@ -235,16 +235,16 @@ class getinfofromdatabase{
 		include 'get-bibinfo-from-database.class.php';
         //        $db_bibobj = new getbibinfofromdatabase;
         $sql = $wpdb->prepare("SELECT 
-                            bibref
+                            bibref,
+                            weights
                             FROM
                             ".$this->table_prefix."outcome_values
                             WHERE relation_id = '".$result[0]['relation_id']."'
                             ;");
         //        echo $sql;
-
-        $bibindex = $wpdb->get_results($sql, ARRAY_A); 
+        $bibindex = $wpdb->get_results($sql, ARRAY_A);
         $result[0]['bibindex'] = explode(';',$bibindex[0]['bibref']);
-//        print_r($result);
+        $result[0]['weights'] = $bibindex[0]['weights'];
 		return $result;
 	}
 
@@ -363,7 +363,8 @@ class getinfofromdatabase{
 						".$this->table_prefix."outcome_values.effects,
 						".$this->table_prefix."outcome_values.rflag,
                         ".$this->table_prefix."outcome_values.number_of_studies,
-						".$this->table_prefix."outcome_values.bibref
+                        ".$this->table_prefix."outcome_values.bibref,
+                        ".$this->table_prefix."outcome_values.weights
 					FROM
 						".$this->table_prefix."outcome_values
 						Inner Join ".$this->table_prefix."relations ON ".$this->table_prefix."outcome_values.relation_id = ".$this->table_prefix."relations.id
@@ -396,10 +397,10 @@ class getinfofromdatabase{
 										effects='".$outcome_values[$i]['effects']."', 
 										rflag='".(($outcome_values[$i]['rflag']==1)?'both':0)."',
 										number_of_studies='".$outcome_values[$i]['number_of_studies']."',
-										bibref='".(isset($outcome_values[$i]['bibref'])? $outcome_values[$i]['bibref']:"NULL")."'
+                                        bibref='".(isset($outcome_values[$i]['bibref'])? $outcome_values[$i]['bibref']:"NULL").",
+                                        weights='".(isset($outcome_values[$i]['weights'])? $outcome_values[$i]['weights']:"NULL")."
 									WHERE id='".$outcome_values[$i]['id']."' AND relation_id='".$relation_id."';" );
                 $resp = $wpdb->query( $sql );
-
 			}
 			else if( $relation_id ){
 				$sql = $wpdb->prepare( "INSERT INTO ".$this->table_prefix."outcome_values 
@@ -415,10 +416,12 @@ class getinfofromdatabase{
 											'".$outcome_values[$i]['effects']."',
 											'".(($outcome_values[$i]['rflag']==1)?'both':0)."',
 											'".$outcome_values[$i]['number_of_studies']."',
-    										'".(isset($outcome_values[$i]['bibref'])? $outcome_values[$i]['bibref']:"NULL")."'
+                                            '".(isset($outcome_values[$i]['bibref'])? $outcome_values[$i]['bibref']:"NULL")."',
+                                            '".(isset($outcome_values[$i]['weights'])? $outcome_values[$i]['weights']:"NULL")."'
 									);");
 				$resp = $wpdb->query( $sql );
             }
+//            var_dump(preg_replace('/\s+/',' ',$sql));
 
 //				 echo preg_replace('/(\s)+/', ' ',$sql); exit;
 			next($data);

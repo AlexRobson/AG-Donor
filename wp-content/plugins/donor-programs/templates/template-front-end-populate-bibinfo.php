@@ -42,14 +42,18 @@ function display_metaresults_with_papers($bibdb_obj, $single_studies,$metastudyd
     if(isset($single_studies)){
     # Construct the data to represent the individual studies comprising the requested meta-analysis
         # Variables include lower, mean, upper, weighting etc.
-
+        
         if(!empty($single_studies)){
         array_unshift($single_studies,$metastudydata[0]);
         $data = $single_studies;
+        $weights = explode(',',$metastudydata[0]['weights']);
+//        var_dump($weights);
+        array_unshift($weights,100);
         foreach ($data as $i=>$datum){
             $data[$i]['lower'] =  roundsf($datum['lower'],3);
             $data[$i]['upper'] =  roundsf($datum['upper'],3);
-            $data[$i]['mean'] =  roundsf($datum['mean'],3); 
+            $data[$i]['mean'] =  roundsf($datum['mean'],3);
+            $data[$i]['weight'] = $weights[$i]/100;
         }
         unset($i);
 //        echo "<pre>"; print_r($data[count($data)-1]); echo "</pre>";
@@ -91,7 +95,7 @@ function display_papers($bibdata){
                     <?php echo $bibitem['author']; echo " (".$bibitem['year'].")";?>
                     </p>
                     <p class="title">
-                    "<?php echo $bibitem['title'] ?>"
+                    "<?php echo $bibitem['title'] ?>",
                     </p>
                     <p class="title">
                     <?php echo $bibitem['journal'] ?>

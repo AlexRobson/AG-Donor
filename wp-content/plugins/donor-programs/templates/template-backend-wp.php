@@ -507,10 +507,13 @@
                             <div class="left-form">
                                 <label>Help for submitting CSV: Example text (copy and paste in)</label>
                                 <textarea id="helpsubmitcsv" name="helpsubmitCSV" cols="200" rows="4">
-program,outcome,upper,mean,lower,units,randomized,blinded,effects,Rflag,numberofstudies,papernumbers
-testprogramme,testoutcome,0.24,0.14,0.04,cm,1,2,1,0,3,1;2;4
-testprogramme,testoutcome,0.13,0.17,1.4,mm,1,2,1,0,3,3;7;11</textarea>
-                            </div>
+program,outcome,numberofstudies,lower,mean,upper,units,weights,papernumbers,randomized,blinded,effects,Rflag
+Conditional Cash Transfers,attendance rates,4,0.021808978,0.033003364,0.044197753,percentage points,"9.036,0,0.348,90.615","9;17;19;49",0,0,FE,0
+Conditional Cash Transfers,attendance rates,4,0.01197708,0.09363696,0.17529684,percentage points,"41.646,0.024,13.162,45.168",9;17;19;49,0,0,RE,0
+Conditional Cash Transfers,attendance rates,4,0.021808978,0.033003364,0.044197753,percentage points,"9.036,0,0.348,90.615",9;17;19;49,0,2,FE,0
+Conditional Cash Transfers,attendance rates,4,0.01197708,0.09363696,0.17529684,percentage points,"41.646,0.024,13.162,45.168",9;17;19;49,0,2,RE,0
+</textarea>
+                           </div>
                         </td>
                     </tr>
                     <tr>
@@ -556,7 +559,9 @@ The final line displays the relationships already known for each line in the CSV
                 <a href=javascript:;"" value="SaveAll" class="button-primary" name="SaveAllh" id="tab-5-applyall" style="margin: 0 auto; display:none"/>Apply all</a>
                 <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-5-refresh" style="float:right;"/>Refresh</a>
                 <a href=javascript:;"" value="Display" class="button" name="Refresh" id="tab-5-display" style="float:right;"/>Display</a>
+            
         </form>
+            <div id="AJAXstatus"></div>
             <div style="clear:both"></div>
 
 
@@ -708,6 +713,7 @@ jQuery(document).ready(function(){
                 jQuery(document).on('submit','#form-donor-import' ,function(){
                     $data = jQuery(this).serialize();
                     var selector = jQuery(this);
+                    jQuery('#AJAXstatus').html('<img src="../wp-content/plugins/donor-programs/templates/images/ajax-loader.gif" style="margin:auto">').show();
                     $method = jQuery(this).find(".formclicked").attr('value');
                     jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_update',relations:$data, method:'create'},
                         function(answer){
@@ -721,16 +727,22 @@ jQuery(document).ready(function(){
                                 }
                                 else {
                                     jQuery(selector).find(".formclicked").removeClass('.formclicked');
+                                    console.log(answer);
+                                    jQuery(selector).siblings('.input-status').children('#status').attr('value','ERROR').show().css('border-color','red').attr('style','background-color:red!important');
                                 } 
                             }
                             
                             else {
-                            
-                            }
 
+                                    jQuery(selector).children('.tab-5-interpret-options').remove();
+                                    jQuery(selector).find(".formclicked").removeClass('.formclicked');
+                                    console.log(answer);
+                                    jQuery(selector).siblings('.input-status').children('#status').attr('value','ERROR').show().css('border-color','red').attr('style','background-color:red!important');
+                            }
                             return true;
                         }
                     );
+                    jQuery('#AJAXstatus').html(''); 
                     return false;
                 }); 
 

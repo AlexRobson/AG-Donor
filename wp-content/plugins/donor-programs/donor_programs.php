@@ -208,12 +208,13 @@ function get_bibliography( $data = array(), $template = null, $selection_name = 
 }
 
 function get_results_with_bibinfo( $data = array(), $template = null, $selection_name = ''){
-   
+//  var_dump($data); 
     $bibdb_obj = new getbibinfofromdatabase();
     $bibindexarray = $data[0]['bibindex'];;
     $bibdata = $bibdb_obj->get_bibdata($bibindexarray);
     include 'includes/numberformat.php';
     include 'templates/template-front-end-populate-bibinfo.php';
+
 //	echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data);
 //    echo display_papers($bibdata);
 	
@@ -318,13 +319,18 @@ function donorprog_admin_ajax_call(){
     include 'templates/template-backend-ajax.php'; 
 
     if( isset($_POST['data']) ){        
-        $csv = array_map("str_getcsv", explode("\n", $_POST['data']));
+//        $csv = array_map("str_getcsv", (explode("\n", ($_POST['data']))),array('',",",'"','\\'));
+        $csv = array_map(function($line){
+                                        //var_dump($line); 
+                                        return str_getcsv(stripslashes($line),',','"','\\'); }, 
+                                        explode("\n", ($_POST['data']))
+                                        );
 //        echo "<pre>"; print_r($csv); echo "</pre>";
     	$keys = array_shift($csv);
         foreach($csv as $i=>$row) {
         	$csv[$i] = array_combine($keys,$row);
             };   
-//        echo "<pre>"; print_r($keys); echo "</pre>";
+  //      echo "<pre>"; print_r($keys); echo "</pre>";
     };
 //    echo display_interpretation_header();
     foreach ($csv as $i=>$line) {
@@ -332,6 +338,7 @@ function donorprog_admin_ajax_call(){
         $id['outcome_id'] = $db_obj->custom_get_outcome_id($line['outcome']);  
         $rids = $db_obj->custom_get_relations($id);
         $paperid = explode(";",$line['papernumbers']);
+        $weights = explode(",",$line['weights']);
         $bibdata = $bib_obj->get_paper_bibdata($paperid);
 
 
@@ -431,13 +438,10 @@ function donorprog_admin_ajax_call_bib(){
                     next;
                 };
 
-        $temp = str_replace(')','',explode('(',$csv[$i]['outcomename']));
-                                        $csv[$i]['units'] = $temp[1];
-                                        $temp  = (explode('(',$csv[$i]['outcomename']));
-                                                                $csv[$i]['outcomename'] = strtolower($temp[0]);
-
-
-
+            $temp = str_replace(')','',explode('(',$csv[$i]['outcomename']));
+            $csv[$i]['units'] = $temp[1];
+            $temp  = (explode('(',$csv[$i]['outcomename']));
+            $csv[$i]['outcomename'] = strtolower($temp[0]);
 
 //            echo "<pre>"; print_r($csv); echo "</pre>";
  
@@ -489,4 +493,5 @@ function donorprog_admin_ajax_call_bib_update(){
 die();
 
 }
+include 'includes/array2csv.php';
 ?>

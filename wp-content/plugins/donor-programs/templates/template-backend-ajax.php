@@ -59,7 +59,10 @@ function donorprog_admin_display_intepretation($csv,$db_obj,$rids){
                             <label>Bibligraphic Data</label>
                             <input type="text" name="relations[outcome_values][position][bibdata]" value="<?php echo ($csv['bibdata']);?>" />
                         </div>
-
+                        <div class="left-form">
+                            <label>Weights</label>
+                            <input type="text" name="relations[outcome_values][position][weights]" value="<?php echo ($csv['weights']);?>" />
+                        </div>
                         <div class="left-form">
                             <label>Bibligraphic indices</label>
                             <input type="text" name="relations[outcome_values][position][bibref]" value="<?php echo $csv['papernumbers'];?>" />
