@@ -270,7 +270,7 @@
                 var selector = jQuery(this);
                 
                 $data = <? echo json_encode($data); ?>;
-                jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'downloadcsv', data:$data},
+                jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'downloadcsv', data:$data, selection:get_form_selection()},
                     function(answer){
                         //http://localhost/dev/aidgrade/html/wp-content/plugins/donor-programs/data/results1380492577.csv
                         var url =answer;

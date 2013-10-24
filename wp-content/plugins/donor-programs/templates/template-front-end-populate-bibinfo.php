@@ -50,9 +50,9 @@ function display_metaresults_with_papers($bibdb_obj, $single_studies,$metastudyd
 //        var_dump($weights);
         array_unshift($weights,100);
         foreach ($data as $i=>$datum){
-            $data[$i]['lower'] =  roundsf($datum['lower'],3);
-            $data[$i]['upper'] =  roundsf($datum['upper'],3);
-            $data[$i]['mean'] =  roundsf($datum['mean'],3);
+            $data[$i]['lower'] =  roundsf($datum['lower'],2);
+            $data[$i]['upper'] =  roundsf($datum['upper'],2);
+            $data[$i]['mean'] =  roundsf($datum['mean'],2);
             $data[$i]['weight'] = $weights[$i]/100;
         }
         unset($i);
