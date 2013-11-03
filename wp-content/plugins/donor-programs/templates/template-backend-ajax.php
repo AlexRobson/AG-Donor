@@ -55,10 +55,11 @@ function donorprog_admin_display_intepretation($csv,$db_obj,$rids){
                             <label>Number_of_studies</label>
                             <input type="text" name="relations[outcome_values][position][number_of_studies]" value="<?php print(count(explode(";",$csv['papernumbers'])))?>" />
                         </div>
-                        <div class="left-form">
+<!--                        <div class="left-form">
                             <label>Bibligraphic Data</label>
                             <input type="text" name="relations[outcome_values][position][bibdata]" value="<?php echo ($csv['bibdata']);?>" />
                         </div>
+-->
                         <div class="left-form">
                             <label>Weights</label>
                             <input type="text" name="relations[outcome_values][position][weights]" value="<?php echo ($csv['weights']);?>" />

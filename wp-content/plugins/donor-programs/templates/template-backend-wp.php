@@ -76,7 +76,7 @@
                 <a href="javascript:;" class="button" id="toggletab4">Settings</a>
                 <a href="javascript:;" class="button" id="toggletab5">Import Relations</a>
                 <a href="javascript:;" class="button" id="toggletab6">Import Bibliography</a>
-                <a href="javascript:;" class="button" id="toggletab7">Aliases</a>
+                <a href="javascript:;" class="button" id="toggletab7">Bulk Ops</a>
                 </p>
                 <p class="button-description"></p>
     </div> 
@@ -507,12 +507,29 @@
                             <div class="left-form">
                                 <label>Help for submitting CSV: Example text (copy and paste in)</label>
                                 <textarea id="helpsubmitcsv" name="helpsubmitCSV" cols="200" rows="4">
-program,outcome,numberofstudies,lower,mean,upper,units,weights,papernumbers,randomized,blinded,effects,Rflag
+program,outcome,numberofpapers,lower,mean,upper,units,weights,papernumbers,randomized,blinded,effects,Rflag
 Conditional Cash Transfers,attendance rates,4,0.021808978,0.033003364,0.044197753,percentage points,"9.036,0,0.348,90.615","9;17;19;49",0,0,FE,0
 Conditional Cash Transfers,attendance rates,4,0.01197708,0.09363696,0.17529684,percentage points,"41.646,0.024,13.162,45.168",9;17;19;49,0,0,RE,0
 Conditional Cash Transfers,attendance rates,4,0.021808978,0.033003364,0.044197753,percentage points,"9.036,0,0.348,90.615",9;17;19;49,0,2,FE,0
 Conditional Cash Transfers,attendance rates,4,0.01197708,0.09363696,0.17529684,percentage points,"41.646,0.024,13.162,45.168",9;17;19;49,0,2,RE,0
 </textarea>
+<label>String list of outcomes (string-sensitive, case-insensitive) </label>
+                                <textarea><?php $loutcome = $db_obj->admin_get_outcome();
+                        for ($i=0;$i<count($loutcome);$i++){
+                            echo $loutcome[$i]['name'];
+                            echo ", "; 
+                        }
+                        ?>
+        </textarea>
+
+<label>String list of programs (string-sensitive, case-insensitive) </label>
+                                <textarea><?php $lprogram = $db_obj->admin_get_programs();
+                        for ($i=0;$i<count($lprogram);$i++){
+                            echo $lprogram[$i]['name'];
+                            echo ", "; 
+                        }
+                        ?>
+        </textarea>
                            </div>
                         </td>
                     </tr>
@@ -558,8 +575,8 @@ The final line displays the relationships already known for each line in the CSV
             <input type="submit" name="CSVtext" id="CSVsave">	
                 <a href=javascript:;"" value="SaveAll" class="button-primary" name="SaveAllh" id="tab-5-applyall" style="margin: 0 auto; display:none"/>Apply all</a>
                 <a href=javascript:;"" value="Refresh" class="button" name="Refresh" id="tab-5-refresh" style="float:right;"/>Refresh</a>
-                <a href=javascript:;"" value="Display" class="button" name="Refresh" id="tab-5-display" style="float:right;"/>Display</a>
-            
+                <a href=javascript:;"" value="Display" class="button" name="Refresh" id="tab-5-display" style="float:right;"/>Display</a> 
+                <a href=javascript:;"" value="Flush" class="button" name="Flush" id="tab-5-flush" style="float:right;"/>Flush</a>
         </form>
             <div id="AJAXstatus"></div>
             <div style="clear:both"></div>
@@ -590,16 +607,8 @@ The final line displays the relationships already known for each line in the CSV
                             <div class="left-form" style="width:100%;">
                                 <label>Help for submitting CSV: Example text (copy and paste in)</label>
                                 <textarea id="helpsubmitcsv" name="helpsubmitCSV" rows="4" disabled style="background:#dddddd; width:100%;" >
-paperid,author,year,title,journal,volume,lower,ES,upper,outcomename,intervention
-1,"Alam, Baez and Del Carpio",2011,Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan,IZA Discussion Papers,,-0.303888,-0.0387,0.226488,Labor force participation (percentage points),Conditional Cash Transfers
-1,"Alam, Baez and Del Carpio",2011,Does Cash for School Influence Young Women's Behavior in the Longer Term? Evidence from Pakistan,IZA Discussion Papers,,-0.043428,-0.0154,0.012628,Pregnancy rate (percentage points),Conditional Cash Transfers
-2,Baez and Camacho,2011,Assessing the Long-term Effects of Conditional Cash Transfers on Human Capital Evidence from Colombia,Policy Research Working Papers,,-0.07464,-0.057,-0.03936,Test scores (standard deviations),Conditional Cash Transfers
-3,Baird et al.,2009,The short-term impacts of a schooling conditional cash transfer program on the sexual behavior of young women,Impact Evaluation Series No.40: Policy Research Working Papers,19 Suppl,-0.03648,-0.011,0.01448,Pregnancy rate (percentage points),Conditional Cash Transfers
-4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,-0.0098,0.049,0.1078,Attendance rate (percentage points),Conditional Cash Transfers
-4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,0.06576,0.103,0.14024,Enrollment rate (percentage points),Conditional Cash Transfers
-4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,0.0856,0.115,0.1444,Retention rate (percentage points),Conditional Cash Transfers
-4,"Baird, McIntosh and Ozler",2009,Designing Cost-Effective Cash Transfer Programs to Boost Schooling among Young Women in Sub-Saharan Africa,Policy Research Working Papers,,-0.01612,0.027,0.07012,Test scores (standard deviations),Conditional Cash Transfers
-5,Borraz and Gonzalez,2009,Impact of the Uruguayan Conditional Cash Transfer Program,Cuadernos de Economia,46,-4.678366,-3.426377,-2.174388,Labor hours (hours),Conditional Cash Transfers
+intervention,outcomename,lower,ES,upper,units,author,publicationyear,title,journal,volume,paperid
+Conditional Cash Transfers,Attendance rate,0.0114,0.08,0.1486,percentage points,Baird et al.,2011,Cash or Condition? Evidence from a Cash Transfer Experiment,Working Paper,126,9
                                 </textarea>   
                          </div>
                         </td>
@@ -644,7 +653,6 @@ paperid,author,year,title,journal,volume,lower,ES,upper,outcomename,intervention
 
 
         <div id="tabs-7" class="tabitem">
-
 
 
 </div>
@@ -850,7 +858,19 @@ jQuery(document).ready(function(){
                         jQuery(this).addClass('formclicked');
                 });
 
+                // Flush DB
 
+                jQuery(document).on('click','#tab-5-flush', function(event){
+                    if (confirm('This will wipe the relations database table. Do not continue unless you are certain appropriate backups exist')){
+
+                    jQuery.post('<?php echo(admin_url('admin-ajax.php')); ?>', {action:'donoradmin_delete', method:'purge'},
+                        function(answer){
+                            alert('Database purge responded with: ' + answer);
+                        }
+                    );
+                    };
+                    return false;
+                });
   
 });                
 

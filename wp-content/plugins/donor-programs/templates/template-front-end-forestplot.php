@@ -18,6 +18,7 @@
 <h3 style="text-align: center;">0 studies have been found. Please change your criteria and submit your search again.</h3>
 <style type="text/css"> .result{ margin-bottom: 0px !important; } </style>
 <?php else: ?>
+
 <p class="title-outcome"><?php echo ($template=='outcome')?'Programs':'Outcome'; ?></p>
 <p class="title-effects">Effects</p>
 <?php 
@@ -142,7 +143,7 @@
 			<?php endif; ?>
         </p>
 
-            <p class="slice-count" style="margin: 0px 0px 0px <?php echo $margin_left; ?>px; background-position: <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px <?php echo 12.5*(1-sqrt($data[$i]['weight']));?>px; background-size: <?php echo 25*sqrt(($data[$i]['weight']));?>px <?php echo 25*sqrt(($data[$i]['weight']));?>px;">
+            <p class="slice-count" style="margin: 0px 0px 0px <?php echo $margin_left; ?>px; background-position: <?php echo 0;//12.5*(1-sqrt($data[$i]['weight']));?>px <?php echo 0;//12.5*(1-sqrt($data[$i]['weight']));?>px; background-size: <?php echo 25;//*sqrt(($data[$i]['weight']));?>px <?php echo 25;//*sqrt(($data[$i]['weight']));?>px;">
 			<?php echo mouse_over_mean_text( $adjust_tool_tip_value_units[$i], $selection_name, $data[$i]['unit'], $template, $data[0]['name'], ($i>0)? '0':null) ; ?>
 
             <?php if($data[$i]['lower']<$data[$i]['mean'] && $data[$i]['upper']>$data[$i]['mean']): ?>
@@ -176,7 +177,8 @@
     if ($i==0) { echo "<div class='spacer'></div>"; }
 	endfor;
 ?>
-<div class="null-top"></div>
+
+    <?php if ($data[0]['unit']!='risk ratio' && $data[0]['unit']!='rate ratio')  :?><div class="null-top"></div><?php endif; ?>
 <?php if( $template == 'programs' && $data[$i-1]['link_donate'] ): ?>
 	<a href="<?php echo $data[$i-1]['link_donate']; ?>" target="_blank" class="donate-program-button">DONATE TO THIS PROGRAM</a>
 <?php else: ?>

@@ -185,7 +185,7 @@ class getinfofromdatabase{
 			$clause_where = "WHERE 1=0";
 		}
 		
-		$sql = $wpdb->prepare("SELECT
+        $sql = $wpdb->prepare("SELECT
 							SUM(".$this->table_prefix."outcome_values.number_of_studies) as total
 						FROM
 							".$this->table_prefix."outcomes
@@ -194,8 +194,8 @@ class getinfofromdatabase{
 							Inner Join ".$this->table_prefix."programs ON ".$this->table_prefix."programs.id = ".$this->table_prefix."relations.program_id
 						 ".$clause_where."
 						 LIMIT 1;");
-		//return $sql;
-		return $wpdb->get_var($sql);
+	//	return $sql;
+    	return $wpdb->get_var($sql);
 	}
 	
 	function get_results_meta_analysis( $selection = array() ){
@@ -554,8 +554,19 @@ class getinfofromdatabase{
         }
     }
 
-    
-
+    function admin_bulk_delete($type){
+        global $wpdb;
+        if ($type=='relations'){
+            $sql = $wpdb->prepare(
+                "TRUNCATE wp_donor_outcome_values"
+            );
+            $resp = $wpdb->get_results($sql, ARRAY_A);
+            return $resp;
+        }    
+        else {
+            return "Fail";         
+        }
+    }
 
 
 }

@@ -6,6 +6,7 @@
  * - Show results data in the scale.
  * - This template is used by "compare programs by outcome", "Examine a program" and "Meta Analysis Application"
  * - This template is always showed by an Ajax call.
+ * AR Edit: Since the introduction of the forestplot, this template file is no longer used by the metaanalysis app"
  */
 
 ?>
@@ -25,7 +26,12 @@
 	$adjust_tool_tip_value_units = array();
 	for( $i=0; $i<count($data); $i++ ):
 		
-		/*if(str_replace(' ', '-', strtolower(trim($data[$i]['unit']))) == 'percentage-points' && abs($data[$i]['lower']) >= 1 && abs($data[$i]['upper']) >= 1 ){
+        // Set the specificity to 2 s.f. before any other operations
+        $data[$i]['lower'] =  number_format($data[$i]['lower'],2);                                                                                             
+        $data[$i]['upper'] =  number_format($data[$i]['upper'],2);                  
+        $data[$i]['mean'] =  number_format($data[$i]['mean'],2);   
+        
+        /*if(str_replace(' ', '-', strtolower(trim($data[$i]['unit']))) == 'percentage-points' && abs($data[$i]['lower']) >= 1 && abs($data[$i]['upper']) >= 1 ){
 				$data[$i]['lower'] = round($data[$i]['lower']/100, 2);
 				$data[$i]['upper'] = round($data[$i]['upper']/100, 2);
 				$adjust_tool_tip_value_units[$i] = $data[$i]['mean'];
@@ -73,9 +79,12 @@
 	}
 	?>
 	<?php	
-	for( $i=0; $i<count($data); $i++ ):
+    for( $i=0; $i<count($data); $i++ ):
+
+
 	if( $data[$i]['lower'] < $data[$i]['upper'] && $data[$i]['lower']<=$data[$i]['mean'] && $data[$i]['upper']>=$data[$i]['mean'] ):
-		
+
+
 		$limit_off_left = false;
 		if( $data[$i]['lower']<-5 ){
 			$data[$i]['lower'] = -5;

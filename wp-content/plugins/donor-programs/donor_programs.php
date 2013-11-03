@@ -147,7 +147,7 @@ function donorprog_process_ajax_call(){
 		);
 //		print_r($data);		
 		$result = $db_obj->get_total_studies_by_criteria( $data );
-		//print_r($result);
+	//	print_r($result);
 		if($result && $result == 1)
 			echo !$result?0:$result." study matches your criteria";
 		elseif ($result && $result > 1)
@@ -208,15 +208,15 @@ function get_bibliography( $data = array(), $template = null, $selection_name = 
 }
 
 function get_results_with_bibinfo( $data = array(), $template = null, $selection_name = ''){
-//  var_dump($data); 
+    var_dump($data); 
+    $data = datapreprocessing($data);
     $bibdb_obj = new getbibinfofromdatabase();
     $bibindexarray = $data[0]['bibindex'];;
     $bibdata = $bibdb_obj->get_bibdata($bibindexarray);
+   // var_dump($bibdata);
+    $bibdata = datapreprocessing($bibdata);
     include 'includes/numberformat.php';
     include 'templates/template-front-end-populate-bibinfo.php';
-
-//	echo display_metaresults_with_papers($bibdb_obj, $bibindexarray, $bibdata,$data);
-//    echo display_papers($bibdata);
 	
 }
 
@@ -292,7 +292,7 @@ function mouse_over_mean_text( $mean = null, $name = null, $unit = null, $templa
     }
 
 	if($mean != null && $name && $unit && $template && $selection_name){
-		if( str_replace(' ', '-', strtolower(trim($unit))) == '(rate-ratio)' || str_replace(' ', '-', strtolower(trim($unit))) == '(risk-ratio)' ){
+		if( $unit == ('rate ratio') || $unit == ('risk ratio')){
 			$result .= '<a class="'.$mean.'" title="'.(($template=='programs')?ucfirst($selection_name):ucfirst($name)).' '.(($mean>1)?"increased":"decreased").' '.(($template=='programs')?strtolower($name):strtolower($selection_name)).' by '.$mean.' '.$unit.'">&nbsp;</a>';
 		}
 		/*elseif( str_replace(' ', '-', strtolower(trim($unit))) == 'percentage-points' || str_replace(' ', '-', strtolower(trim($unit))) == '%' ){
@@ -371,6 +371,19 @@ function donorprog_admin_ajax_call(){
     die();
 }
 
+add_action('wp_ajax_donoradmin_delete','donorprog_admin_ajax_call_delete');
+function donorprog_admin_ajax_call_delete(){
+    include 'includes/get-info-from-database.class.php';
+    $db_obj = new getinfofromdatabase();
+    (isset($_POST['method']))? 'continue':die();
+    if ($_POST['method']=='purge'){
+    $resp = $db_obj->admin_bulk_delete('relations');
+    echo $resp;
+    }
+    die();
+
+}
+
 add_action('wp_ajax_donoradmin_update', 'donorprog_admin_ajax_call_update');
 function donorprog_admin_ajax_call_update(){
 	
@@ -437,11 +450,7 @@ function donorprog_admin_ajax_call_bib(){
                 else {
                     next;
                 };
-
-            $temp = str_replace(')','',explode('(',$csv[$i]['outcomename']));
-            $csv[$i]['units'] = $temp[1];
-            $temp  = (explode('(',$csv[$i]['outcomename']));
-            $csv[$i]['outcomename'] = strtolower($temp[0]);
+            $csv[$i]['outcomename'] = strtolower($csv[$i]['outcomename']);
 
 //            echo "<pre>"; print_r($csv); echo "</pre>";
  
@@ -493,5 +502,27 @@ function donorprog_admin_ajax_call_bib_update(){
 die();
 
 }
+
+// Miscellaneous functions
+//
+
+function datapreprocessing($data){
+
+    for($i=0;$i<count($data);$i++){
+        if ($data[$i]['unit']=='percentage points'){
+            $data[$i]['lower'] *= 100;
+            $data[$i]['upper'] *= 100;
+            $data[$i]['mean'] *= 100;
+        };
+    }
+
+
+    return $data;
+}
+
+
+
+
+
 include 'includes/array2csv.php';
 ?>

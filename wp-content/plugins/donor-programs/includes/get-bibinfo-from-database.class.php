@@ -146,7 +146,7 @@ class getbibinfofromdatabase{
 										journal='".$bibdata['journal']."', 
 										outcome='".$bibdata['outcome']."', 
 										program='".$bibdata['program']."', 
-                                        year='".$bibdata['year']."',
+                                            year='".$bibdata['publicationyear']."',
                                         paper_id='".$bibdata['paperid']."'
                                         ;" );
 

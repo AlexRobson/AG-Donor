@@ -91,9 +91,9 @@
 							<a href="javascript:;" class="question" title="<?php print_r($help5); ?>"></a>
 							<?php endif; ?>
 							<ul>
-								<li><input id="meta-radio-7" type="radio" name="meta-analysis[0][effect]" value="0" checked="checked" />
+								<li><input id="meta-radio-7" type="radio" name="meta-analysis[0][effect]" value="0" />
                                 <label for="meta-radio-7">Fixed effects</label></li>
-								<li><input id="meta-radio-8" type="radio" name="meta-analysis[0][effect]" value="1" />
+								<li><input id="meta-radio-8" type="radio" name="meta-analysis[0][effect]" value="1" checked="checked"/>
                                 <label for="meta-radio-8">Random effects</label></li>
 							</ul>
 						</div>
